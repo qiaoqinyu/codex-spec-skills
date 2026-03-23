@@ -1,0 +1,7 @@
+interface:
+  display_name: "Specs Capture"
+  short_description: "Write session deltas into specs"
+  default_prompt: "Use $specs-capture to write durable conclusions from this session back into the canonical spec files with minimal churn."
+
+policy:
+  allow_implicit_invocation: true
