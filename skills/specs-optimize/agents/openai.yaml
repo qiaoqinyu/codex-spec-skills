@@ -1,7 +1,0 @@
-interface:
-  display_name: "Specs Optimize"
-  short_description: "Audit and improve repo specs"
-  default_prompt: "Use $specs-optimize to audit an existing specs-first setup, report must-fix and should-improve findings, and apply targeted cleanup."
-
-policy:
-  allow_implicit_invocation: true

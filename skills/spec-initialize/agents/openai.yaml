@@ -1,7 +1,0 @@
-interface:
-  display_name: "Spec Initialize"
-  short_description: "Bootstrap or migrate repo specs"
-  default_prompt: "Use $spec-initialize to create a new specs-first setup, migrate legacy instruction surfaces into specs/, or rebuild a broken repository navigation structure."
-
-policy:
-  allow_implicit_invocation: true

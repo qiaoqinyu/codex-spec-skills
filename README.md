@@ -1,24 +1,23 @@
 # codex-spec-skills
 
-OpenAI Codex skills for specs-first repository setup and maintenance.
+OpenAI Codex skills for Codex guidance reconciliation and session capture.
 
-This repository contains three reusable skills:
+This repository now contains two reusable skills:
 
-- `spec-initialize`: bootstrap a new `specs/` layout or migrate a repo from
-  legacy instruction surfaces such as `AGENTS.md`, `CLAUDE.md`, or
-  `.claude/rules`.
-- `specs-optimize`: audit an existing specs-first setup, report issues, and
-  apply targeted cleanup.
-- `specs-capture`: write durable conclusions from the current session back into
-  the canonical files under `specs/`.
+- `codex-md-reconcile`: reconcile, bootstrap, or migrate Codex guidance such as
+  `AGENTS.md`, `specs/*.md`, and related skill docs.
+- `codex-md-capture`: capture durable learnings from the current session and
+  write them back into the right Codex guidance layer with minimal churn.
+
+Older `spec-*` and `specs-*` skill names are deprecated and no longer the
+canonical interface for this repository.
 
 ## Repository Layout
 
 ```text
 skills/
-  spec-initialize/
-  specs-capture/
-  specs-optimize/
+  codex-md-capture/
+  codex-md-reconcile/
 ```
 
 Each skill follows the Codex skill layout:
@@ -29,15 +28,16 @@ Each skill follows the Codex skill layout:
 
 ## When To Use These Skills
 
-Use these skills when you want a repo to keep shared agent guidance in a
-`specs/` knowledge base instead of scattering durable project truth across
-multiple prompts and instruction files.
+Use these skills when you want to keep Codex guidance clean, discoverable, and
+durable across sessions.
 
-Typical progression:
+Typical split:
 
-1. Run `spec-initialize` once when the repo has no clean specs-first setup.
-2. Use `specs-optimize` for ongoing cleanup and routing improvements.
-3. Use `specs-capture` after a session produces durable new project truth.
+1. Use `codex-md-reconcile` when the repo guidance needs bootstrap, migration,
+   reconciliation, cleanup, or routing repair.
+2. Use `codex-md-capture` after a session produces durable new project truth
+   that should be written back into `AGENTS.md`, `specs/*.md`, or a related
+   skill reference.
 
 ## Install
 
@@ -47,8 +47,8 @@ Official Codex docs use this personal skill directory:
 $HOME/.agents/skills/
 ```
 
-In your current local setup, `~/.codex/skills/` is also in active use, so
-either of these user-level locations may be relevant in practice:
+In some local setups, `~/.codex/skills/` is also in active use, so either of
+these user-level locations may be relevant in practice:
 
 ```text
 $HOME/.agents/skills/
@@ -65,9 +65,8 @@ Example:
 
 ```bash
 gh repo clone qiaoqinyu/codex-spec-skills
-cp -a codex-spec-skills/skills/spec-initialize ~/.agents/skills/
-cp -a codex-spec-skills/skills/specs-optimize ~/.agents/skills/
-cp -a codex-spec-skills/skills/specs-capture ~/.agents/skills/
+cp -a codex-spec-skills/skills/codex-md-reconcile ~/.agents/skills/
+cp -a codex-spec-skills/skills/codex-md-capture ~/.agents/skills/
 ```
 
 If your local Codex installation is using `~/.codex/skills/` instead, copy the

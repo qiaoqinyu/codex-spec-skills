@@ -1,0 +1,33 @@
+# Deep Learning Training Template
+
+```md
+# Training
+
+## Current Training Pattern
+
+1. ...
+2. ...
+3. ...
+
+## Default Evaluation Rule
+
+- Judge changes by ...
+- Do not over-trust ...
+
+## Stable Lessons
+
+- ...
+
+## Model Direction
+
+- Current default: ...
+- Non-default alternatives: ...
+
+## Sampling And Finetune Conventions
+
+- ...
+
+## Training Gotchas
+
+- ...
+```
