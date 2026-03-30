@@ -5,11 +5,10 @@ description: Capture durable learnings from the current session and propose conc
 
 # Codex MD Capture
 
-Capture durable session outcomes and route them into the right Codex guidance
-layer.
+Capture session learnings as a narrow, verified write-back.
 
-This skill is incremental. It turns one session's learnings into proposed
-updates. It does not perform a broad documentation audit or redesign.
+This skill is for incremental memory capture. It is not a doc audit, migration,
+or broad rewrite tool.
 
 ## Use This Skill When
 
@@ -33,123 +32,73 @@ updates. It does not perform a broad documentation audit or redesign.
 Use `$codex-md-reconcile` for structure cleanup, migration, or broader
 organization work.
 
-## Routing Model
+## Operating Rules
 
-Route each learning to the narrowest stable home:
-
-- `AGENTS.md`
-  - durable repo-wide instructions
-  - high-priority boundaries
-  - exact validation commands
-  - routing guidance to topic docs
-- `specs/*.md`
-  - topic-specific background, workflows, constraints, or repeated gotchas
-  - examples: `specs/architecture.md`, `specs/data.md`, `specs/review.md`
-- skill `references/`
-  - only when the learning is specific to a reusable skill workflow rather than
-    the repository itself
-- `~/.codex/AGENTS.md`
-  - only for user-personal defaults that should not be stored in repo docs
-
-Do not invent a separate `rules` layer unless the repository already has one
-and the user explicitly wants to keep it.
-
-Ignore Claude-specific surfaces such as `CLAUDE.md`, `.claude/rules/*.md`, and
-`docs/claude/*` unless the user explicitly asks for Claude-to-Codex migration
-or cross-surface reconciliation.
-
-## What To Capture
-
-Capture only high-signal outcomes that will help a future agent:
-
-- verified commands or environment setup corrections
-- confirmed architecture or path discoveries
-- durable safety constraints and approval boundaries
-- recurring failure modes and their fixes
-- reusable review or validation steps
-- clarified routing about which document to read for which task
-
-Do not capture:
-
-- raw debugging chatter
-- uncertain hypotheses
-- one-off outputs with no future value
-- generic advice that is not specific to the repository
+- only capture learnings that satisfy the write-back gate in
+  [references/capture-rubric.md](references/capture-rubric.md)
+- use the routing table in
+  [references/destination-routing.md](references/destination-routing.md)
+  before drafting edits
+- use the output contract in
+  [references/output-template.md](references/output-template.md)
+- use [references/examples.md](references/examples.md) to distinguish
+  write-back from `no-op`
+- if no learning passes the gate, return a clear `no-op` result and stop
+- prefer append-only, minimal additions over rewriting large sections
+- do not invent a new rules layer unless the repository already uses one and
+  the user explicitly wants to keep it
+- ignore Claude-specific surfaces such as `CLAUDE.md`, `.claude/rules/*.md`,
+  and `docs/claude/*` unless the user explicitly asks for Claude-to-Codex
+  migration or cross-surface reconciliation
 
 ## Workflow
 
-### 1. Reflect on the Session
+### 1. Collect candidate learnings
 
-Identify what was missing at the start of the session that would have made the
-work faster or safer.
+Extract the smallest set of session outcomes that might be worth preserving.
 
-Focus on:
+### 2. Apply the write-back gate
 
-- commands discovered or corrected
-- repo-specific patterns
-- non-obvious gotchas
-- environment quirks
-- testing or review steps that proved useful
+Keep only learnings that are:
 
-### 2. Find the Canonical Home
+- verified
+- repeated or likely to recur
+- durable beyond the current session
+- relevant to the repository rather than generic advice
 
-Prefer updating an existing file over creating a new one.
+Return `no-op` if nothing survives this filter.
 
-- put repo-wide instructions in `AGENTS.md`
-- put topic detail in an existing `specs/<topic>.md`
-- create a new `specs/<topic>.md` only if no good home exists and the topic is
-  likely to recur
-- if the session reveals that the repo is missing basic `AGENTS.md` to
-  `specs/*.md` routing, propose handing the structural fix to
-  `$codex-md-reconcile` rather than inventing a full layout here
+### 3. Find the canonical home
 
-### 3. Draft Minimal Additions
+For each surviving learning:
 
-Keep additions dense and durable.
+- choose the narrowest stable destination
+- state why that destination wins
+- state why the learning does not belong in the other likely destinations
 
-Preferred format:
+If the session reveals missing routing or stale structure rather than a simple
+write-back, hand off to `$codex-md-reconcile`.
 
-- `<command or rule>` - `<brief purpose or caution>`
-- short bullets over paragraphs
-- examples only when they remove ambiguity
+### 4. Draft a minimal proposal
 
-### 4. Show Proposed Changes First
+Use the template in [references/output-template.md](references/output-template.md).
 
-For each target file, show:
+Always include:
 
-```md
-### Update: <file path>
-**Why:** <one-line reason>
-**Layer:** <AGENTS.md | specs | skill reference | personal global>
+- learning
+- evidence
+- destination
+- why-not-elsewhere
+- validation
+- confidence
 
-Diff:
+### 5. Apply with approval and verify
 
-    + <addition>
-```
-
-If a new file is truly needed, show the full proposed contents.
-
-### 5. Apply With Approval
-
-Only edit the files the user approves.
+Only edit approved files.
 
 After applying, verify:
 
-- paths and filenames in the added guidance are real
-- the target file still reads cleanly
+- the target path is real
+- the added guidance is not duplicate or contradictory
 - `AGENTS.md` stays short and routing-focused
-
-## Distillation Rules
-
-- prefer verified repository truth over intent or aspiration
-- keep one concept per bullet when possible
-- capture stable lessons, not session transcript noise
-- if a detail only matters for one topic, move it into `specs/<topic>.md`
-- if the same mistake happened twice, bias toward capturing it
-
-## Output Shape
-
-1. Session learnings worth keeping
-2. Proposed destination for each learning
-3. Diff or inserted block per file
-4. Validation notes after approval and apply
+- no temporary or low-confidence material leaked into long-term docs

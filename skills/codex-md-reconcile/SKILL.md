@@ -5,7 +5,8 @@ description: Reconcile Codex guidance files such as `AGENTS.md`, `specs/*.md`, a
 
 # Codex MD Reconcile
 
-Reconcile Codex guidance with findings first and edits second.
+Reconcile Codex guidance with findings first, edits second, and verification
+last.
 
 This skill is for repository-level reconciliation, bootstrap, migration, and
 organization work. It is not the default tool for writing back one session's
@@ -13,11 +14,15 @@ learnings.
 
 ## Use This Skill When
 
-- the user asks to reconcile, repair, or improve the active Codex guidance surface
-- `AGENTS.md` and `specs/*.md` exist but are incomplete, stale, duplicated, or poorly routed
-- some Codex guidance exists, but key files or navigation are missing and need minimal bootstrap
+- the user asks to reconcile, repair, or improve the active Codex guidance
+  surface
+- `AGENTS.md` and `specs/*.md` exist but are incomplete, stale, duplicated, or
+  poorly routed
+- some Codex guidance exists, but key files or navigation are missing and need
+  minimal bootstrap
 - `AGENTS.md` does not clearly route to the canonical `specs/*.md` files
-- the user explicitly asks for Claude-to-Codex migration or cross-surface reconciliation
+- the user explicitly asks for Claude-to-Codex migration or cross-surface
+  reconciliation
 
 ## Do Not Use This Skill When
 
@@ -26,125 +31,79 @@ learnings.
   update
 - the user mainly wants to write back one or two newly discovered commands or
   gotchas
-- the repository still contains Claude-oriented files, but the user did not
-  ask for Claude-to-Codex migration or cross-surface reconciliation
+- the repository still contains Claude-oriented files, but the user did not ask
+  for Claude-to-Codex migration or cross-surface reconciliation
 
 Use `$codex-md-capture` for session delta write-back.
 
-## Core Model
+## Operating Rules
 
-For Codex-oriented repositories, prefer this layered model:
-
-- `AGENTS.md`
-  - durable repo-wide instructions
-  - boundaries and approvals
-  - exact validation commands
-  - routing to deeper docs
-- `specs/*.md`
-  - topic-specific background, workflows, constraints, and recurring gotchas
-- repo or user skills
-  - reusable workflows, not the main home for repository truth
-
-Default bias:
-
-- keep `AGENTS.md` short
-- route topic detail into `specs/*.md`
-- do not introduce a separate `rules` subsystem unless the user explicitly
+- follow the five-stage workflow in
+  [references/reconcile-workflow.md](references/reconcile-workflow.md)
+- score the guidance surface with
+  [references/quality-criteria.md](references/quality-criteria.md)
+- use [references/organization-patterns.md](references/organization-patterns.md)
+  only when restructuring is justified
+- decide canonical ownership with
+  [references/canonical-home-rules.md](references/canonical-home-rules.md)
+- verify every proposed repair with
+  [references/verification-checklist.md](references/verification-checklist.md)
+- use [references/examples.md](references/examples.md) to avoid over-repair
+- default to the smallest useful change set
+- do not introduce a separate `rules/` subsystem unless the user explicitly
   wants one
-- do not introduce `specs/index.md` by default; only keep it when the
-  repository already uses it well or routing has genuinely outgrown
-  `AGENTS.md`
+- do not introduce `specs/index.md` by default; only keep or add it when
+  routing has genuinely outgrown direct `AGENTS.md` navigation
 
 ## Workflow
 
-### 1. Discovery
+### 1. Discover the real guidance surface
 
-Inspect the real guidance surface:
+Inspect what actually exists before making any recommendation.
 
-```bash
-find . -name "AGENTS.md" 2>/dev/null | head -50
-find specs -name "*.md" 2>/dev/null | sort
-find .agents/skills -name "SKILL.md" 2>/dev/null | head -50
-```
+At minimum, find:
 
-Only if the user explicitly asks for Claude-to-Codex migration or
-cross-surface reconciliation, also inspect legacy Claude surfaces when
-present:
+- `AGENTS.md` or `AGENT.md` entrypoints
+- `specs/*.md`
+- relevant skill references
+- legacy Claude surfaces only when the user explicitly asked for migration
 
-```bash
-find . -name "CLAUDE.md" -o -path "*/.claude/rules/*.md" 2>/dev/null | head -50
-```
+### 2. Reality-check against the repository
+
+Trust executable repo reality over stale docs.
 
 Check:
 
-- which file is the real entrypoint
-- whether `AGENTS.md` tells Codex that `specs/*.md` exists and where to start
-- whether `AGENTS.md` is carrying too much topic detail
-- whether `specs/*.md` has clear topic boundaries
-- whether any guidance is duplicated or contradictory
-- whether legacy Claude concepts are still being described as if Codex supported
-  them natively
-
-By default, ignore Claude-specific surfaces such as `CLAUDE.md`,
-`.claude/rules/*.md`, and `docs/claude/*`. Do not audit, sync, or clean them
-unless the user explicitly asks for migration or cross-surface alignment.
-
-### 2. Reality Check
-
-Verify guidance against the actual repository:
-
 - commands from manifests or scripts
-- current paths and directory layout
+- real paths and directories
 - environment setup from config files
-- validation steps that actually run
-- dangerous operations that need approval
+- dangerous operations and approval boundaries
+- dirty-worktree context when it affects the docs
 
-If guidance conflicts with executable repo reality, trust the repo and mark the
-docs stale.
+### 3. Score and classify findings
 
-### 3. Quality Assessment
+Produce findings before proposing edits.
 
-Use [references/quality-criteria.md](references/quality-criteria.md).
+Every issue should land in one of:
 
-Always produce findings before proposing edits.
+- `must fix`
+- `should improve`
+- `leave alone`
 
-Report shape:
+### 4. Propose the minimal repair
 
-```md
-## Codex Guidance Report
+Use the template in
+[references/reconcile-workflow.md](references/reconcile-workflow.md).
 
-### Summary
-- entrypoint files: X
-- specs files: X
-- key risk: ...
-
-### Must Fix
-- ...
-
-### Should Improve
-- ...
-
-### Proposed Changes
-1. ...
-```
-
-### 4. Draft Targeted Changes
-
-Apply the routing guidance in
-[references/organization-patterns.md](references/organization-patterns.md)
-only when restructuring is justified.
-
-Priorities:
+Default priorities:
 
 1. fix stale or incorrect guidance
-2. add or repair `AGENTS.md` routing into `specs/*.md` when it is missing
-3. clarify routing and canonical ownership
-4. shrink `AGENTS.md` if it carries too much topic detail
+2. repair missing routing into existing topic docs
+3. clarify canonical ownership
+4. shrink `AGENTS.md` when it carries topic detail
 5. leave good-enough structure alone
 
-Show each proposed change as a diff or replacement block.
-
-### 5. Apply With Approval
+### 5. Apply with approval and verify
 
 Before editing, show:
 
@@ -152,7 +111,8 @@ Before editing, show:
 - why the change helps future Codex sessions
 - the exact diff or replacement block
 
-After approval, update files and re-check key paths, commands, and routing.
+After approval, re-check the repository using
+[references/verification-checklist.md](references/verification-checklist.md).
 
 ## Migration Rules
 
@@ -164,34 +124,14 @@ When porting from Claude-oriented guidance:
   user explicitly wants to preserve a rules directory
 - replace `.claude.local.md` usage with `~/.codex/AGENTS.md` only for personal
   defaults
-- do not claim Codex auto-loads arbitrary markdown files outside its `AGENTS.md`
-  discovery model
+- do not claim Codex auto-loads arbitrary markdown files outside its
+  `AGENTS.md` discovery model
 - if `specs/*.md` exists but `AGENTS.md` does not route into it, treat that as
   a must-fix and add a minimal navigation block
 
 Outside explicit migration work:
 
-- do not treat `CLAUDE.md`, `.claude/rules/*.md`, or `docs/claude/*` as part of
-  the active Codex guidance surface
+- do not treat `CLAUDE.md`, `.claude/rules/*.md`, or `docs/claude/*` as part
+  of the active Codex guidance surface
 - do not flag Claude-only files as stale, duplicated, or contradictory unless
   the user asked for migration or cross-surface cleanup
-
-## Common Problems To Flag
-
-- `AGENTS.md` does not mention `specs/*.md` even though the repo uses it
-- `AGENTS.md` repeats large blocks from `specs/*.md`
-- topic knowledge has no clear canonical home
-- safety rules are buried inside architecture or history docs
-- legacy Claude terms remain in a Codex repo without explanation
-- a new abstraction such as `rules/` was introduced without a real need
-- long historical logs crowd out durable guidance
-- experimental findings live only in `results/` paths with no journal or
-  promoted durable conclusion
-
-## References
-
-- Use [references/quality-criteria.md](references/quality-criteria.md) for
-  scoring and issue patterns.
-- Use [references/organization-patterns.md](references/organization-patterns.md)
-  for routing and migration choices.
-- Use [references/templates.md](references/templates.md) for starter layouts.
