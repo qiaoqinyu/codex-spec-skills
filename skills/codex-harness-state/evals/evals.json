@@ -1,0 +1,71 @@
+{
+  "skill_name": "codex-harness-state",
+  "evals": [
+    {
+      "id": 1,
+      "name": "Minimal Session Continuity Scaffold",
+      "prompt": "This repo already has AGENTS.md and specs files, but tomorrow's session keeps losing context. Create the smallest useful state layer.",
+      "expected_output": "Progress plus handoff scaffold under .agents/state/, with a clear no-overlap boundary against durable docs.",
+      "files": [
+        "AGENTS.md",
+        "specs/commands.md"
+      ],
+      "expectations": [
+        "Chooses progress.md and session-handoff.md as the minimum scaffold",
+        "Keeps mutable state separate from AGENTS.md and specs files",
+        "Explains what belongs in state versus durable docs",
+        "Avoids inventing unnecessary extra files"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Parallel Experiment Board",
+      "prompt": "We now have exp28a, exp28b, and exp28c in flight, and the team keeps mixing up what each one changed. Set up the right state files.",
+      "expected_output": "Adds an experiment board and, if justified, per-track notes with clear lifecycle states and invariants.",
+      "files": [
+        "configs/exp28a.json",
+        "configs/exp28b.json",
+        "configs/exp28c.json"
+      ],
+      "expectations": [
+        "Adds experiment-board.json for parallel tracking",
+        "Separates changed variables from invariants",
+        "Uses allowed lifecycle states",
+        "Does not confuse board state with final scientific conclusions"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Stable Docs Boundary",
+      "prompt": "Please add the verified cluster launch command we discovered today into the right long-term Codex doc, and also make sure future sessions remember it.",
+      "expected_output": "Calls out that durable guidance write-back belongs to codex-md-capture, while state files only hold current-session continuity if needed.",
+      "files": [
+        "AGENTS.md",
+        "specs/commands.md"
+      ],
+      "expectations": [
+        "Identifies the durable-doc portion as out of scope for this skill",
+        "Separates state continuity from stable guidance",
+        "Avoids stuffing canonical commands into mutable handoff files alone",
+        "Names codex-md-capture as the right companion skill"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Reality-Checked Refresh",
+      "prompt": "The repo already has .agents/state files, but they may be stale. Refresh them from the actual artifact paths and mark unknowns honestly.",
+      "expected_output": "Updated state files that reflect real paths, status, and blockers without guessing missing evidence.",
+      "files": [
+        ".agents/state/progress.md",
+        ".agents/state/session-handoff.md",
+        ".agents/state/experiment-board.json"
+      ],
+      "expectations": [
+        "Checks existing state before replacing it",
+        "Marks unknown or missing evidence explicitly",
+        "Keeps the layer lean instead of rewriting everything",
+        "Preserves continuity while correcting stale entries"
+      ]
+    }
+  ]
+}

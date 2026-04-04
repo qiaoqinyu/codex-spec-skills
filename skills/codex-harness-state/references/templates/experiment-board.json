@@ -1,0 +1,23 @@
+{
+  "updated_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "tracks": [
+    {
+      "id": "exp28a",
+      "goal": "Compare one changed variable against a clear baseline.",
+      "status": "ready",
+      "baseline": "exp27b",
+      "changed_variables": [
+        "learning_rate"
+      ],
+      "invariants": [
+        "dataset split unchanged",
+        "evaluation metric unchanged"
+      ],
+      "artifact_paths": [
+        "results/exp28a"
+      ],
+      "next_action": "Run the exact command listed in session-handoff.md",
+      "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
+    }
+  ]
+}

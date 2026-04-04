@@ -1,0 +1,42 @@
+{
+  "name": "codex-harness-state",
+  "version": "0.1.0",
+  "description": "Harness state-layer skill for project-local progress, handoff, and experiment tracking scaffolding.",
+  "repository": "https://github.com/qiaoqinyu/codex-spec-skills",
+  "languages": [
+    "en"
+  ],
+  "compatibility": {
+    "minCliVersion": "0.1.0",
+    "agents": [
+      "codex-cli",
+      "generic"
+    ]
+  },
+  "entryPoint": "SKILL.md",
+  "references": [
+    "references/state-layout.md",
+    "references/lifecycle-workflow.md",
+    "references/templates.md",
+    "references/examples.md"
+  ],
+  "triggers": [
+    "session handoff",
+    "progress tracking",
+    "experiment board",
+    "parallel experiments",
+    "project state files",
+    "resume next session",
+    "state layer scaffolding"
+  ],
+  "bundled": {
+    "scripts": [],
+    "assets": [],
+    "templates": [
+      "references/templates/progress.md",
+      "references/templates/session-handoff.md",
+      "references/templates/experiment-board.json",
+      "references/templates/experiment-note.md"
+    ]
+  }
+}
