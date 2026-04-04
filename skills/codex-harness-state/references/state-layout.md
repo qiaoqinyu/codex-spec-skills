@@ -35,6 +35,10 @@ Default layout:
   not hold project runtime state
 - if the repository already has a coherent alternative state path, adapt to it
   instead of forcing a move
+- if this state layer is active, `AGENTS.md` should contain a tiny routing note
+  that points to `.agents/state/session-handoff.md` first and
+  `.agents/state/progress.md` second
+- keep that note routing-only; the mutable details stay in the state files
 
 ## Compression Rules
 

@@ -9,6 +9,8 @@ and related Codex guidance surfaces.
 - verifies docs against repository reality
 - classifies findings into `must fix`, `should improve`, or `leave alone`
 - proposes the smallest repair that improves routing, ownership, and structure
+- treats an active `.agents/state/*` layer as something `AGENTS.md` may need to
+  point to briefly
 
 ## What It Does Not Do
 
@@ -53,6 +55,7 @@ The bundled evals focus on:
 - stale router repair
 - coherent alternative router leave-alone decisions
 - minimal bootstrap into existing docs
+- minimal `AGENTS.md` routing into an active state layer
 - explicit boundary handling when the real problem is lifecycle or state
 
 ## See Also

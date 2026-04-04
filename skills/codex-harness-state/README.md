@@ -6,6 +6,8 @@ tracking files.
 ## What It Does
 
 - creates or refreshes a minimal `.agents/state/` layer inside a target repo
+- adds a tiny `AGENTS.md` routing note when the state layer would otherwise be
+  invisible to future sessions
 - separates mutable session state from stable Codex guidance docs
 - keeps progress, next steps, blockers, and active experiment/workstream status
   visible across interruptions
@@ -14,7 +16,7 @@ tracking files.
 
 ## What It Does Not Do
 
-- write stable rules into `AGENTS.md` or `specs/*.md`
+- write or broadly rewrite stable rules into `AGENTS.md` or `specs/*.md`
 - reconcile Codex guidance routing or canonical ownership
 - build a full automation platform, scheduler, or runtime harness
 - replace proper experiment artifacts, logs, or results directories
@@ -51,6 +53,7 @@ tracking files.
 The bundled evals focus on:
 
 - choosing the smallest useful state scaffold
+- making the state layer discoverable from `AGENTS.md` without bloating it
 - separating mutable state from durable guidance
 - handling parallel experiment tracking cleanly
 - refusing to solve a docs problem with state files

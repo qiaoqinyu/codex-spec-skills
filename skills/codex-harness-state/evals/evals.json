@@ -5,13 +5,14 @@
       "id": 1,
       "name": "Minimal Session Continuity Scaffold",
       "prompt": "This repo already has AGENTS.md and specs files, but tomorrow's session keeps losing context. Create the smallest useful state layer.",
-      "expected_output": "Progress plus handoff scaffold under .agents/state/, with a clear no-overlap boundary against durable docs.",
+      "expected_output": "Progress plus handoff scaffold under .agents/state/, plus a tiny AGENTS routing note, with a clear no-overlap boundary against durable docs.",
       "files": [
         "AGENTS.md",
         "specs/commands.md"
       ],
       "expectations": [
         "Chooses progress.md and session-handoff.md as the minimum scaffold",
+        "Adds or proposes a minimal AGENTS runtime-state pointer when missing",
         "Keeps mutable state separate from AGENTS.md and specs files",
         "Explains what belongs in state versus durable docs",
         "Avoids inventing unnecessary extra files"
@@ -36,6 +37,21 @@
     },
     {
       "id": 3,
+      "name": "State Layer Discoverability",
+      "prompt": "Set up .agents/state/progress.md and session-handoff.md, but keep AGENTS.md clean. Future agents still need to know those files exist.",
+      "expected_output": "A tiny AGENTS routing note that points to the state files without copying mutable details into durable docs.",
+      "files": [
+        "AGENTS.md"
+      ],
+      "expectations": [
+        "Keeps the AGENTS change short and routing-only",
+        "Points to session-handoff first and progress second",
+        "Does not duplicate current status inside AGENTS.md",
+        "Preserves the boundary between durable guidance and mutable state"
+      ]
+    },
+    {
+      "id": 4,
       "name": "Stable Docs Boundary",
       "prompt": "Please add the verified cluster launch command we discovered today into the right long-term Codex doc, and also make sure future sessions remember it.",
       "expected_output": "Calls out that durable guidance write-back belongs to codex-md-capture, while state files only hold current-session continuity if needed.",
@@ -51,7 +67,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 5,
       "name": "Reality-Checked Refresh",
       "prompt": "The repo already has .agents/state files, but they may be stale. Refresh them from the actual artifact paths and mark unknowns honestly.",
       "expected_output": "Updated state files that reflect real paths, status, and blockers without guessing missing evidence.",

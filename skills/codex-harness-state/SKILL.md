@@ -10,7 +10,8 @@ guidance.
 
 This skill is for session continuity, progress tracking, handoff, and
 experiment or workstream lifecycle management. It does not replace `AGENTS.md`
-or `specs/*.md`.
+or `specs/*.md`, but it may add a tiny `AGENTS.md` pointer so the state layer
+is discoverable.
 
 ## Use This Skill When
 
@@ -27,7 +28,8 @@ or `specs/*.md`.
 
 ## Do Not Use This Skill When
 
-- the user wants to write stable facts into `AGENTS.md` or `specs/*.md`
+- the user wants to write or broadly rewrite stable facts in `AGENTS.md` or
+  `specs/*.md`
 - the user wants to reconcile routing, ownership, or structure of Codex
   guidance files
 - the task is a one-off short session with no continuity or tracking need
@@ -44,6 +46,14 @@ Use `$codex-md-capture` for durable guidance write-back and
   repository already uses a coherent alternative path the user wants to keep
 - keep stable truth in `AGENTS.md`, `specs/*.md`, and skill references; keep
   mutable progress and handoff material in state files
+- if this skill creates or materially refreshes `.agents/state/*`, check
+  whether `AGENTS.md` has a minimal runtime-state pointer
+- if the pointer is missing and `AGENTS.md` is otherwise coherent, add only a
+  short routing note into `AGENTS.md` that points to
+  `.agents/state/session-handoff.md` first and `.agents/state/progress.md`
+  second
+- keep that `AGENTS.md` note tiny and routing-only; do not copy mutable state
+  content into durable docs
 - start from the minimal layout in
   [references/state-layout.md](references/state-layout.md)
 - use the lifecycle states in
@@ -64,6 +74,8 @@ Use `$codex-md-capture` for durable guidance write-back and
   changed, and what is unresolved
 - if the real gap is stable repo guidance, say so and hand off to
   `$codex-md-capture` or `$codex-md-reconcile`
+- if `AGENTS.md` is missing, badly stale, or needs more than a tiny routing
+  note, stop and hand off the guidance repair portion to `$codex-md-reconcile`
 - do not duplicate full rulesets from `AGENTS.md` or `specs/*.md` into mutable
   state files
 - avoid chat-transcript dumps, speculative conclusions, or giant experiment
@@ -105,6 +117,8 @@ At minimum:
 - `experiment-board.json` should list each active track with its status,
   baseline, changed variables, invariant checks, artifact paths, and next
   action
+- if `AGENTS.md` exists and lacks a runtime-state pointer, add the smallest
+  routing note needed so future sessions can discover `.agents/state/*`
 
 ### 4. Reconcile the state files against reality
 
@@ -114,6 +128,8 @@ Before finalizing:
 - confirm commands or scripts are real
 - confirm status labels match observed evidence
 - mark missing artifacts or ambiguous results explicitly
+- confirm any new `AGENTS.md` pointer matches the real state paths and does not
+  over-describe them
 
 ### 5. Verify and keep the layer lean
 
@@ -121,6 +137,7 @@ After editing, verify:
 
 - the scaffold is under `.agents/state/` unless intentionally adapted
 - the files do not conflict with stable guidance docs
+- any `AGENTS.md` change is limited to discoverability, not state duplication
 - no secrets or bulky logs were copied in
 - the board statuses use the allowed lifecycle states
 - next-session resume steps are concrete enough to act on

@@ -53,6 +53,23 @@
     },
     {
       "id": 4,
+      "name": "Active State Layer Pointer",
+      "prompt": "The repo already uses .agents/state/session-handoff.md and .agents/state/progress.md, but AGENTS.md never mentions them. Reconcile the guidance surface.",
+      "expected_output": "A should-improve finding plus a tiny AGENTS routing proposal that points to the active state layer without moving stable docs into .agents/.",
+      "files": [
+        "AGENTS.md",
+        ".agents/state/session-handoff.md",
+        ".agents/state/progress.md"
+      ],
+      "expectations": [
+        "Recognizes the state layer as active but mutable",
+        "Keeps the AGENTS change brief and routing-only",
+        "Does not relocate specs into .agents/",
+        "Classifies the missing pointer as guidance discoverability, not full state ownership"
+      ]
+    },
+    {
+      "id": 5,
       "name": "Lifecycle Gap Boundary",
       "prompt": "Our agent forgets everything between sessions. We need progress.md, session-handoff.md, and init.sh. Reconcile the Codex docs to solve it.",
       "expected_output": "Explicit out-of-scope callout that the real gap is state or lifecycle scaffolding, not guidance routing.",

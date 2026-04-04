@@ -15,7 +15,8 @@ learnings.
 This is a harness-aware guidance-layer skill. It owns `AGENTS.md` plus
 `specs/*.md` routing, canonical ownership, and structure repair, not session
 state, handoff logs, bootstrap scripts, feature trackers, or runtime
-verification scaffolding.
+verification scaffolding. It may still route `AGENTS.md` into an existing
+`.agents/state/*` layer so that mutable state is discoverable.
 
 ## Use This Skill When
 
@@ -62,6 +63,9 @@ Use `$codex-md-capture` for session delta write-back.
 - verify every proposed repair with
   [references/verification-checklist.md](references/verification-checklist.md)
 - use [references/examples.md](references/examples.md) to avoid over-repair
+- if `.agents/state/*` exists and is part of the active workflow, treat a tiny
+  `AGENTS.md` pointer into it as compatible guidance routing rather than as
+  state ownership
 - treat a coherent alternative router stack as compatible unless it is causing
   confusion, duplication, or stale guidance
 - include proof of work in the report: files inspected, routers checked,
@@ -85,6 +89,7 @@ At minimum, find:
 
 - `AGENTS.md` or `AGENT.md` entrypoints
 - `specs/*.md`
+- active `.agents/state/*` files when the repository uses a state layer
 - secondary routers such as `WORKSPACE.md`, `specs/index.md`, or subtree
   `INDEX.md` files
 - relevant skill references
@@ -128,9 +133,11 @@ Default priorities:
 
 1. fix stale or incorrect guidance
 2. repair missing routing into existing topic docs
-3. clarify canonical ownership
-4. shrink `AGENTS.md` when it carries topic detail
-5. leave good-enough structure alone
+3. add a tiny runtime-state pointer when `.agents/state/*` exists but is
+   invisible from `AGENTS.md`
+4. clarify canonical ownership
+5. shrink `AGENTS.md` when it carries topic detail
+6. leave good-enough structure alone
 
 If the repository uses a coherent alternative router stack, prefer clarifying
 roles and reducing confusion over normalizing it to the default shape.
@@ -160,6 +167,9 @@ When porting from Claude-oriented guidance:
   `AGENTS.md` discovery model
 - if `specs/*.md` exists but `AGENTS.md` does not route into it, treat that as
   a must-fix and add a minimal navigation block
+- if `.agents/state/*` exists and is actively used but `AGENTS.md` does not
+  mention it at all, treat a tiny runtime-state pointer as `should improve`
+  unless the repo already has another coherent state router
 
 Outside explicit migration work:
 
