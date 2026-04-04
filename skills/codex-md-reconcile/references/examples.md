@@ -14,11 +14,18 @@
   `scripts/setup.sh`
   - mark stale guidance and repair the command
 
+- `AGENTS.md` points to `WORKSPACE.md`, and `WORKSPACE.md` cleanly routes into
+  the right subtree docs
+  - classify this as a coherent alternative router stack
+  - preserve it unless there is proven confusion or duplication
+
 ## Leave-alone cases
 
 - the structure is slightly opinionated but coherent and easy to follow
 - `AGENTS.md` is already short and routes cleanly into topic docs
 - a second navigation layer already exists and works well
+- a subtree `INDEX.md` reduces search cost and does not duplicate the global
+  entrypoint
 
 ## Over-repair to avoid
 
@@ -26,6 +33,8 @@
 - inventing a `rules/` subsystem without a user request
 - turning a small stale-command fix into a full doc rewrite
 - merging unrelated topic docs just to reduce file count
+- replacing a coherent router stack just because it differs from the default
+  preferred shape
 
 ## Escalate instead of guessing
 
@@ -34,3 +43,5 @@
   coherent way
 - migration from Claude surfaces would touch multiple layers with unclear
   ownership
+- two routers give overlapping instructions and you cannot prove which one owns
+  the rule without broader restructuring

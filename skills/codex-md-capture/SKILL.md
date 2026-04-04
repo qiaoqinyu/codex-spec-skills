@@ -36,14 +36,19 @@ organization work.
 
 - only capture learnings that satisfy the write-back gate in
   [references/capture-rubric.md](references/capture-rubric.md)
+- classify each surviving learning by stability horizon: `session fact`,
+  `recurring pattern`, or `policy-level signal`
 - use the routing table in
   [references/destination-routing.md](references/destination-routing.md)
   before drafting edits
+- run a dedup check against the target guidance before proposing any change
 - use the output contract in
   [references/output-template.md](references/output-template.md)
 - use [references/examples.md](references/examples.md) to distinguish
   write-back from `no-op`
 - if no learning passes the gate, return a clear `no-op` result and stop
+- if the strongest conclusion is "this reveals a structure or routing problem",
+  hand off to `$codex-md-reconcile` instead of forcing a write-back
 - prefer append-only, minimal additions over rewriting large sections
 - do not invent a new rules layer unless the repository already uses one and
   the user explicitly wants to keep it
@@ -68,7 +73,16 @@ Keep only learnings that are:
 
 Return `no-op` if nothing survives this filter.
 
-### 3. Find the canonical home
+### 3. Check for duplicates and structural signals
+
+Before proposing any edit:
+
+- look for an equivalent rule in the likely destination
+- if the rule already exists, return `no-op`
+- if the learning mainly exposes stale routing, ambiguous ownership, or a
+  missing navigation layer, hand off to `$codex-md-reconcile`
+
+### 4. Find the canonical home
 
 For each surviving learning:
 
@@ -76,10 +90,13 @@ For each surviving learning:
 - state why that destination wins
 - state why the learning does not belong in the other likely destinations
 
-If the session reveals missing routing or stale structure rather than a simple
-write-back, hand off to `$codex-md-reconcile`.
+Also classify the learning as:
 
-### 4. Draft a minimal proposal
+- `session fact`
+- `recurring pattern`
+- `policy-level signal`
+
+### 5. Draft a minimal proposal
 
 Use the template in [references/output-template.md](references/output-template.md).
 
@@ -87,12 +104,14 @@ Always include:
 
 - learning
 - evidence
+- stability
 - destination
 - why-not-elsewhere
+- dedup check
 - validation
 - confidence
 
-### 5. Apply with approval and verify
+### 6. Apply with approval and verify
 
 Only edit approved files.
 

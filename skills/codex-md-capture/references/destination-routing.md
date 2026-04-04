@@ -33,6 +33,15 @@ Use only when:
 - the learning is about a reusable skill workflow rather than repository truth
 - the rule belongs to the skill itself, not the active project
 
+### handoff to `$codex-md-reconcile`
+
+Use when:
+
+- the learning mainly exposes stale routing or duplicated ownership
+- the canonical home is unclear without restructuring
+- a missing navigation layer or ambiguous layout is the real problem
+- the repository needs a guidance repair, not a factual write-back
+
 ### `~/.codex/AGENTS.md`
 
 Use only for:

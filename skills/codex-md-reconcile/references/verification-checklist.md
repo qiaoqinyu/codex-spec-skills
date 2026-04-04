@@ -6,6 +6,7 @@ Run this after drafting and again after applying approved edits.
 
 - referenced paths exist
 - referenced commands have a real source in the repo
+- secondary routers point to real files and directories
 - environment instructions still match config reality
 - dangerous operations are still gated correctly
 
@@ -21,6 +22,7 @@ Run this after drafting and again after applying approved edits.
 
 - `AGENTS.md` points to the real topic docs when they exist
 - canonical home for each major rule is clear
+- primary and secondary routers have clearly separated jobs
 - moved or condensed content still has a readable pointer from the old location
 
 ## Change Budget
@@ -28,6 +30,14 @@ Run this after drafting and again after applying approved edits.
 - the fix stayed minimal for the problem being solved
 - no broad rewrite happened when a narrow repair would do
 - `specs/index.md` or `rules/` was not introduced by default
+
+## Proof Of Work
+
+- files inspected are listed in the report
+- commands used for verification are listed in the report
+- routers verified are listed in the report
+- any ambiguity left open is stated explicitly
+- any `leave alone` decision has a stated reason
 
 ## Failure Handling
 

@@ -41,6 +41,31 @@ specs/
 
 Add more files only when the topic is genuinely recurring.
 
+## Coherent Alternative Router Stacks
+
+These are compatible shapes when they are explicit and low-friction.
+
+### `AGENTS.md` + `WORKSPACE.md`
+
+Use when:
+
+- `AGENTS.md` stays as the session entrypoint
+- `WORKSPACE.md` is a fast directory or domain router
+- the two files have clearly separated jobs
+
+Do not flatten this shape just to match the default pattern if it is already
+easy to follow.
+
+### `AGENTS.md` + subtree `INDEX.md`
+
+Use when:
+
+- one subtree owns many related docs or reusable workflows
+- a local index reduces search cost inside that subtree
+- `AGENTS.md` points to the subtree index instead of repeating all routes
+
+Treat this as a secondary router, not as proof that the layout is broken.
+
 ## When To Add `specs/index.md`
 
 Do not add `specs/index.md` by default.
@@ -60,6 +85,8 @@ it. Treat that as compatibility with an existing shape, not the default target.
 Avoid a standalone `rules/` layer when:
 
 - the repository can express the guidance cleanly inside topic docs
+- the repository already has a coherent alternative router stack that does not
+  need another layer
 - the distinction between rules and background would create duplication
 - the user wants less interpretation burden on the agent
 
@@ -90,6 +117,18 @@ Read specs/architecture.md for structure.
 Read specs/commands.md for runnable commands.
 Read the relevant topic file under specs/ before substantive work.
 ```
+
+## Preserve A Good Existing Shape
+
+If the repository already has:
+
+- a short `AGENTS.md`
+- one or more explicit secondary routers
+- clear canonical ownership
+- low duplication
+
+prefer documenting the roles of those routers over migrating everything to the
+default shape.
 
 ## Migration Patterns
 

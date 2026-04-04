@@ -18,6 +18,12 @@
   - verified against repo reality
   - worth writing back as a corrected command
 
+- the same validation command surfaced in multiple sessions and is still absent
+  from repo guidance
+  - stability is now closer to `recurring pattern`
+  - worth proposing as durable guidance rather than leaving it as session-only
+    trivia
+
 ## Reject and return no-op
 
 - a single failed attempt with no confirmed fix
@@ -25,6 +31,9 @@
 - a maybe-correct explanation that was never validated
 - generic advice like "write clear code"
 - temporary branch notes that will age out immediately
+- the target file already contains an equivalent rule with different wording
+  - cite the existing rule
+  - return `no-op` instead of duplicating it
 
 ## Borderline cases
 
@@ -35,3 +44,8 @@
 - session revealed missing routing between `AGENTS.md` and `specs/*.md`
   - do not patch structure here
   - hand off to `$codex-md-reconcile`
+
+- session revealed that the real problem is split ownership between two files
+  - do not guess a winner inside `codex-md-capture`
+  - classify this as a structure signal and hand off to
+    `$codex-md-reconcile`

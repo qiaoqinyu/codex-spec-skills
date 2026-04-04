@@ -42,6 +42,9 @@ Use `$codex-md-capture` for session delta write-back.
   [references/reconcile-workflow.md](references/reconcile-workflow.md)
 - score the guidance surface with
   [references/quality-criteria.md](references/quality-criteria.md)
+- classify the repository layout before proposing repairs:
+  `default_codex_shape`, `coherent_alt_router`, `migration_mixed`, or
+  `broken_or_stale`
 - use [references/organization-patterns.md](references/organization-patterns.md)
   only when restructuring is justified
 - decide canonical ownership with
@@ -49,6 +52,10 @@ Use `$codex-md-capture` for session delta write-back.
 - verify every proposed repair with
   [references/verification-checklist.md](references/verification-checklist.md)
 - use [references/examples.md](references/examples.md) to avoid over-repair
+- treat a coherent alternative router stack as compatible unless it is causing
+  confusion, duplication, or stale guidance
+- include proof of work in the report: files inspected, routers checked,
+  commands used, and open ambiguities
 - default to the smallest useful change set
 - do not introduce a separate `rules/` subsystem unless the user explicitly
   wants one
@@ -57,7 +64,7 @@ Use `$codex-md-capture` for session delta write-back.
 
 ## Workflow
 
-### 1. Discover the real guidance surface
+### 1. Discover and classify the real guidance surface
 
 Inspect what actually exists before making any recommendation.
 
@@ -65,8 +72,17 @@ At minimum, find:
 
 - `AGENTS.md` or `AGENT.md` entrypoints
 - `specs/*.md`
+- secondary routers such as `WORKSPACE.md`, `specs/index.md`, or subtree
+  `INDEX.md` files
 - relevant skill references
 - legacy Claude surfaces only when the user explicitly asked for migration
+
+Classify the shape before recommending change:
+
+- `default_codex_shape`
+- `coherent_alt_router`
+- `migration_mixed`
+- `broken_or_stale`
 
 ### 2. Reality-check against the repository
 
@@ -103,6 +119,9 @@ Default priorities:
 4. shrink `AGENTS.md` when it carries topic detail
 5. leave good-enough structure alone
 
+If the repository uses a coherent alternative router stack, prefer clarifying
+roles and reducing confusion over normalizing it to the default shape.
+
 ### 5. Apply with approval and verify
 
 Before editing, show:
@@ -135,3 +154,5 @@ Outside explicit migration work:
   of the active Codex guidance surface
 - do not flag Claude-only files as stale, duplicated, or contradictory unless
   the user asked for migration or cross-surface cleanup
+- do not rewrite a coherent alternative router stack solely to match the
+  default `AGENTS.md` plus `specs/*.md` pattern

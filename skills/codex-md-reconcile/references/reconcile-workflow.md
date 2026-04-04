@@ -15,7 +15,10 @@ Collect:
 
 Output:
 
+- layout shape
 - entrypoint files
+- primary router
+- secondary routers
 - specs files
 - missing files that docs still reference
 - obvious duplicates or overlaps
@@ -28,6 +31,7 @@ Check:
 
 - commands in manifests, scripts, or CI config
 - current paths and directory layout
+- primary and secondary router targets
 - environment setup from config files
 - risky operations or approval boundaries
 - dirty-worktree context when it matters
@@ -56,9 +60,18 @@ Report shape:
 ## Codex Guidance Report
 
 ### Guidance Map
+- layout shape: ...
 - entrypoints: ...
+- primary router: ...
+- secondary routers: ...
 - topic docs: ...
 - key overlaps: ...
+
+### Proof Of Work
+- files inspected: ...
+- routers verified: ...
+- commands used: ...
+- open ambiguities: ...
 
 ### Must Fix
 - ...
@@ -82,6 +95,8 @@ Every proposal must include:
 - why that file owns the fact
 - exact diff or replacement block
 - change budget note if the change is larger than a small patch
+- why migration is worth the churn when you are changing a coherent existing
+  layout
 
 ## 5. Verify
 
@@ -91,4 +106,5 @@ After approval and apply, verify:
 - commands are still grounded in repo reality
 - duplicates were actually reduced
 - `AGENTS.md` remained short and routing-focused
+- secondary routers still point cleanly to their owned scope
 - no unneeded layer such as `specs/index.md` or `rules/` was introduced

@@ -8,6 +8,7 @@ Total score: 100
 
 1. Entry-point quality (20)
 - `AGENTS.md` is short, accurate, and routing-focused.
+- if the repo uses a router stack, the role of each router is explicit.
 - The file contains durable rules rather than large topic dumps.
 - High-priority commands and boundaries are easy to find.
 - If `specs/*.md` exists, `AGENTS.md` tells Codex where to start.
@@ -15,12 +16,16 @@ Total score: 100
 2. Routing clarity (20)
 - It is obvious which markdown file to read for which task.
 - Topic files have distinct ownership.
+- secondary routers such as `WORKSPACE.md` or subtree `INDEX.md` have a clear,
+  non-overlapping role when they exist.
 - The current structure avoids unnecessary extra layers.
 - `specs/index.md` is not added unless it solves a real routing problem.
 
 3. Repository reality (15)
 - Commands, paths, and tool names match the actual repo.
 - Guidance does not depend on removed files or dead workflows.
+- coherent alternative layouts are not misclassified as stale just because they
+  differ from the default shape.
 - Migration notes do not misstate Codex capabilities.
 - Experiment logs point to real artifact locations when they claim to.
 
@@ -37,6 +42,7 @@ Total score: 100
 6. Duplication and contradiction control (15)
 - Each important fact has a clear canonical home.
 - Topic docs do not fight each other.
+- multiple routers can coexist only when their scopes are clearly separated.
 - Background and rules are separated clearly enough to avoid drift.
 - Stable conclusions are promoted out of experiment journals into topic docs.
 
@@ -52,6 +58,8 @@ Total score: 100
 
 - Keep `AGENTS.md` short and practical.
 - Put topic detail in `specs/*.md`.
+- allow coherent router stacks such as `AGENTS.md` plus `WORKSPACE.md` or
+  subtree `INDEX.md` when they genuinely reduce search cost.
 - Prefer one topic file per recurring domain.
 - Introduce extra routing layers only when they solve a real problem.
 - Add minimal `AGENTS.md` routing whenever deeper docs exist.
@@ -62,6 +70,8 @@ Total score: 100
 
 - `AGENTS.md` tries to be both router and encyclopedia
 - `specs/*.md` has unclear topic ownership
+- a coherent alternative router stack gets flattened just to match a preferred
+  style
 - the same rule appears in multiple files with different wording
 - a fake `rules` subsystem is introduced without real benefit
 - historical logs remain mixed into normative guidance

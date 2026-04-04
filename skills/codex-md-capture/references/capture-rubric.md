@@ -21,6 +21,19 @@ Every candidate learning must pass all four checks:
 - specific to the repository, workflow, environment, or reusable skill
 - not generic engineering advice
 
+## Stability Horizon
+
+Classify every candidate that passes the gate:
+
+- `session fact`: useful to record now, but not yet strong enough to imply a
+  repo-wide or long-lived rule on its own
+- `recurring pattern`: repeated enough that future agents would likely benefit
+  from seeing it in guidance
+- `policy-level signal`: stable enough to justify a durable rule, boundary, or
+  canonical routing fact
+
+Bias toward `session fact` unless the stronger label is supported by evidence.
+
 ## Automatic Rejections
 
 Reject the candidate and return `no-op` or `rejected learning` when it is:
@@ -31,6 +44,21 @@ Reject the candidate and return `no-op` or `rejected learning` when it is:
 - a one-off command output with no future value
 - temporary branch state or dirty-worktree trivia
 - a long narrative summary with no stable rule or command inside it
+
+## Blocking Conditions
+
+Do not write back the candidate when:
+
+1. Duplicate or equivalent rule already exists
+- check the likely destination first
+- if the same rule already exists with equivalent meaning, return `no-op`
+- prefer pointing to the existing rule over restating it
+
+2. Structural signal, not a write-back
+- the candidate mainly reveals missing routing, ambiguous canonical ownership,
+  or a stale guidance layout
+- do not force this into a factual write-back
+- hand off to `$codex-md-reconcile`
 
 ## Confidence Bands
 
