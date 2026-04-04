@@ -1,0 +1,52 @@
+{
+  "name": "codex-md-reconcile",
+  "version": "1.1.0",
+  "description": "Harness-aware guidance-layer skill for routing, ownership, and structure repair across Codex docs.",
+  "repository": "https://github.com/qiaoqinyu/codex-spec-skills",
+  "languages": [
+    "en"
+  ],
+  "compatibility": {
+    "minCliVersion": "0.1.0",
+    "agents": [
+      "codex-cli",
+      "generic"
+    ]
+  },
+  "entryPoint": "SKILL.md",
+  "references": [
+    "references/reconcile-workflow.md",
+    "references/quality-criteria.md",
+    "references/canonical-home-rules.md",
+    "references/verification-checklist.md",
+    "references/examples.md",
+    "references/templates.md"
+  ],
+  "triggers": [
+    "reconcile AGENTS.md",
+    "fix specs routing",
+    "Codex guidance cleanup",
+    "bootstrap Codex docs",
+    "stale guidance",
+    "canonical home",
+    "guidance audit"
+  ],
+  "bundled": {
+    "scripts": [],
+    "assets": [],
+    "templates": [
+      "references/templates/agents-minimal.md",
+      "references/templates/specs-architecture.md",
+      "references/templates/specs-commands.md",
+      "references/templates/specs-environment.md",
+      "references/templates/specs-review.md",
+      "references/templates/dl-training.md",
+      "references/templates/dl-data-handling.md",
+      "references/templates/science-split-policy.md",
+      "references/templates/science-provenance-and-workflow.md",
+      "references/templates/science-artifact-manifest.md",
+      "references/templates/science-representation-and-conventions.md",
+      "references/templates/science-experiment-journal.md"
+    ]
+  }
+}

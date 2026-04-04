@@ -1,6 +1,6 @@
 ---
 name: codex-md-reconcile
-description: Reconcile Codex guidance files such as `AGENTS.md`, `specs/*.md`, and related repo skills. Use when the user asks to check, reconcile, optimize, condense, reorganize, repair, or bootstrap project instructions for Codex, especially when some guidance already exists but routing is unclear or key files are missing.
+description: Reconcile Codex guidance files such as `AGENTS.md`, `specs/*.md`, and related repo skills. This is a harness-aware guidance-layer skill for routing, ownership, and structure repair, not a full harness or lifecycle builder.
 ---
 
 # Codex MD Reconcile
@@ -11,6 +11,11 @@ last.
 This skill is for repository-level reconciliation, bootstrap, migration, and
 organization work. It is not the default tool for writing back one session's
 learnings.
+
+This is a harness-aware guidance-layer skill. It owns `AGENTS.md` plus
+`specs/*.md` routing, canonical ownership, and structure repair, not session
+state, handoff logs, bootstrap scripts, feature trackers, or runtime
+verification scaffolding.
 
 ## Use This Skill When
 
@@ -33,6 +38,11 @@ learnings.
   gotchas
 - the repository still contains Claude-oriented files, but the user did not ask
   for Claude-to-Codex migration or cross-surface reconciliation
+- the user mainly needs progress tracking, session handoff, `init.sh`,
+  feature-tracking artifacts, or verification scaffolding for an agent
+  workflow
+- the underlying problem is missing lifecycle/state machinery rather than stale
+  or poorly routed guidance
 
 Use `$codex-md-capture` for session delta write-back.
 
@@ -56,6 +66,9 @@ Use `$codex-md-capture` for session delta write-back.
   confusion, duplication, or stale guidance
 - include proof of work in the report: files inspected, routers checked,
   commands used, and open ambiguities
+- if the real gap is session continuity, state tracking, bootstrap, or
+  verification scaffolding, call that out explicitly instead of over-repairing
+  the guidance surface
 - default to the smallest useful change set
 - do not introduce a separate `rules/` subsystem unless the user explicitly
   wants one

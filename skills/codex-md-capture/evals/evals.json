@@ -1,0 +1,63 @@
+{
+  "skill_name": "codex-md-capture",
+  "evals": [
+    {
+      "id": 1,
+      "name": "Verified Write-Back",
+      "prompt": "This session verified a new local smoke command that future agents should use. Capture it into the right Codex guidance file with a minimal proposal.",
+      "expected_output": "Destination map with evidence, stability classification, dedup check, and a minimal write-back proposal.",
+      "files": [],
+      "expectations": [
+        "Classifies the learning by stability horizon",
+        "Chooses a narrow canonical destination",
+        "Includes evidence and validation notes",
+        "Avoids broad rewriting"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Duplicate Rule No-Op",
+      "prompt": "We re-confirmed a validation command that already exists in the canonical destination. Capture it.",
+      "expected_output": "Explicit no-op because an equivalent rule already exists.",
+      "files": [
+        "AGENTS.md",
+        "specs/commands.md"
+      ],
+      "expectations": [
+        "Checks the likely destination first",
+        "Reports an equivalent-rule no-op",
+        "Does not propose duplicate guidance",
+        "Says no files should change"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Structural Handoff",
+      "prompt": "The session revealed that the real problem is stale routing between AGENTS.md and specs files. Capture that learning.",
+      "expected_output": "Handoff to codex-md-reconcile rather than a direct write-back.",
+      "files": [
+        "AGENTS.md",
+        "specs/index.md"
+      ],
+      "expectations": [
+        "Identifies the problem as structural rather than factual",
+        "Avoids forcing a guidance write-back",
+        "Routes the issue to codex-md-reconcile",
+        "Keeps confidence scoped to observed facts"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Low-Confidence Rejection",
+      "prompt": "I think the repo should probably always use bun instead of npm, but we did not verify it. Capture it anyway.",
+      "expected_output": "Rejected learning or no-op because the candidate failed the write-back gate.",
+      "files": [],
+      "expectations": [
+        "Fails the verified gate",
+        "Does not invent a durable rule",
+        "Explains why the learning is rejected",
+        "Says no files should change"
+      ]
+    }
+  ]
+}

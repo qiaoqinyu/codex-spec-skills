@@ -1,6 +1,6 @@
 ---
 name: codex-md-capture
-description: Capture durable learnings from the current session and propose concise updates to Codex guidance files. Use when the user asks to summarize this session, update project memory, write back new commands or gotchas, or turn conversation learnings into persistent guidance in `AGENTS.md`, `specs/*.md`, or related skill references.
+description: Capture durable learnings from the current session and propose concise updates to Codex guidance files. This is a harness-aware guidance-layer skill for `AGENTS.md`, `specs/*.md`, and related skill references, not a full harness or session-state builder.
 ---
 
 # Codex MD Capture
@@ -9,6 +9,10 @@ Capture session learnings as a narrow, verified write-back.
 
 This skill is for incremental memory capture. It is not a doc audit, migration,
 or broad rewrite tool.
+
+This is a harness-aware guidance-layer skill. It owns durable Codex guidance
+truth, not session-state scaffolding such as progress logs, handoff files,
+bootstrap scripts, feature trackers, or full verification workflows.
 
 ## Use This Skill When
 
@@ -28,6 +32,11 @@ or broad rewrite tool.
 - the user wants a large rewrite of `AGENTS.md` or `specs/*.md`
 - the repository has Claude-oriented legacy files, but the user did not ask to
   migrate or reconcile them
+- the user mainly needs progress tracking, session handoff, `init.sh`,
+  feature-tracking artifacts, or verification scaffolding for an agent
+  workflow
+- the real problem is missing session continuity or lifecycle ownership rather
+  than durable guidance truth
 
 Use `$codex-md-reconcile` for structure cleanup, migration, or broader
 organization work.
@@ -49,6 +58,9 @@ organization work.
 - if no learning passes the gate, return a clear `no-op` result and stop
 - if the strongest conclusion is "this reveals a structure or routing problem",
   hand off to `$codex-md-reconcile` instead of forcing a write-back
+- if the request is really about state, lifecycle, handoff, or bootstrap
+  scaffolding, say so explicitly and stop rather than forcing it into guidance
+  write-back
 - prefer append-only, minimal additions over rewriting large sections
 - do not invent a new rules layer unless the repository already uses one and
   the user explicitly wants to keep it

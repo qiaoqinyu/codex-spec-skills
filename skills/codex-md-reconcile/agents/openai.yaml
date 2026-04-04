@@ -1,4 +1,4 @@
 interface:
   display_name: "Codex MD Reconcile"
-  short_description: "Reconcile and bootstrap Codex guidance docs"
-  default_prompt: "Use $codex-md-reconcile to reconcile AGENTS.md and related specs/*.md guidance, improving what exists and creating the minimum missing structure when needed."
+  short_description: "Harness-aware guidance reconciliation for Codex docs"
+  default_prompt: "Use $codex-md-reconcile to reconcile AGENTS.md and related specs/*.md guidance, improving routing and canonical ownership without pretending to build full harness state or lifecycle systems."

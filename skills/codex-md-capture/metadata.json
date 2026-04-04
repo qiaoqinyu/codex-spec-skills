@@ -1,0 +1,37 @@
+{
+  "name": "codex-md-capture",
+  "version": "1.1.0",
+  "description": "Harness-aware guidance-layer skill for capturing verified session learnings into durable Codex docs.",
+  "repository": "https://github.com/qiaoqinyu/codex-spec-skills",
+  "languages": [
+    "en"
+  ],
+  "compatibility": {
+    "minCliVersion": "0.1.0",
+    "agents": [
+      "codex-cli",
+      "generic"
+    ]
+  },
+  "entryPoint": "SKILL.md",
+  "references": [
+    "references/capture-rubric.md",
+    "references/destination-routing.md",
+    "references/output-template.md",
+    "references/examples.md"
+  ],
+  "triggers": [
+    "capture session learnings",
+    "write back verified command",
+    "update AGENTS.md",
+    "update specs",
+    "project memory write-back",
+    "durable Codex guidance",
+    "dedup no-op"
+  ],
+  "bundled": {
+    "scripts": [],
+    "assets": [],
+    "templates": []
+  }
+}

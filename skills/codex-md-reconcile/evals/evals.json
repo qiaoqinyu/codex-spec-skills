@@ -1,0 +1,71 @@
+{
+  "skill_name": "codex-md-reconcile",
+  "evals": [
+    {
+      "id": 1,
+      "name": "Missing Routing Repair",
+      "prompt": "AGENTS.md exists and specs/architecture.md plus specs/commands.md exist, but AGENTS.md does not route into them. Reconcile the guidance surface.",
+      "expected_output": "Guidance map, must-fix finding, and a minimal routing repair proposal.",
+      "files": [
+        "AGENTS.md",
+        "specs/architecture.md",
+        "specs/commands.md"
+      ],
+      "expectations": [
+        "Discovers the real guidance surface before proposing edits",
+        "Classifies the routing gap as must-fix",
+        "Proposes a minimal navigation repair",
+        "Avoids unrelated rewrites"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Coherent Alternative Router",
+      "prompt": "AGENTS.md points to WORKSPACE.md, and WORKSPACE.md cleanly routes into the right subtree docs. Review whether the repo should be normalized to a default specs layout.",
+      "expected_output": "Leave-alone or should-improve result that preserves the coherent router stack.",
+      "files": [
+        "AGENTS.md",
+        "WORKSPACE.md"
+      ],
+      "expectations": [
+        "Recognizes a coherent alternative router",
+        "Avoids flattening the structure just to match a preferred style",
+        "Explains why leave-alone is acceptable",
+        "Keeps the change budget minimal"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Minimal Bootstrap",
+      "prompt": "The repo has several specs files but no usable AGENTS.md routing block. Bootstrap the minimum missing structure.",
+      "expected_output": "A minimal AGENTS routing proposal instead of a broad rewrite.",
+      "files": [
+        "specs/index.md",
+        "specs/commands.md",
+        "specs/environment.md"
+      ],
+      "expectations": [
+        "Adds only the minimum entrypoint routing needed",
+        "Uses existing topic docs instead of inventing extra layers",
+        "Explains canonical ownership",
+        "Includes verification steps"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Lifecycle Gap Boundary",
+      "prompt": "Our agent forgets everything between sessions. We need progress.md, session-handoff.md, and init.sh. Reconcile the Codex docs to solve it.",
+      "expected_output": "Explicit out-of-scope callout that the real gap is state or lifecycle scaffolding, not guidance routing.",
+      "files": [
+        "AGENTS.md",
+        "specs/index.md"
+      ],
+      "expectations": [
+        "Does not over-repair the guidance surface",
+        "Names the missing lifecycle or state layer explicitly",
+        "Keeps guidance repair separate from harness scaffolding",
+        "Avoids pretending the docs alone solve the problem"
+      ]
+    }
+  ]
+}
