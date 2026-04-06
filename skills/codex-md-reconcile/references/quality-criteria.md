@@ -38,6 +38,7 @@ Total score: 100
 - The docs tell the agent what to do, what to ask first, and what not to touch.
 - Validation steps are concrete.
 - Dangerous operations are gated clearly.
+- Temporary state versus durable guidance is explicit.
 
 6. Duplication and contradiction control (15)
 - Each important fact has a clear canonical home.
@@ -45,6 +46,7 @@ Total score: 100
 - multiple routers can coexist only when their scopes are clearly separated.
 - Background and rules are separated clearly enough to avoid drift.
 - Stable conclusions are promoted out of experiment journals into topic docs.
+- Promotion boundaries do not blur state, capture, and reconcile ownership.
 
 ## Grade Bands
 
@@ -63,6 +65,7 @@ Total score: 100
 - Prefer one topic file per recurring domain.
 - Introduce extra routing layers only when they solve a real problem.
 - Add minimal `AGENTS.md` routing whenever deeper docs exist.
+- Keep the route from mutable state to durable guidance explicit and small.
 - When migrating from Claude, replace implicit loading claims with explicit
   routing language.
 
@@ -76,3 +79,4 @@ Total score: 100
 - a fake `rules` subsystem is introduced without real benefit
 - historical logs remain mixed into normative guidance
 - a repo has many results folders but no readable experiment journal
+- low-certainty state or one-off findings are promoted into durable docs

@@ -8,6 +8,10 @@
 
 - 
 
+## Evidence To Trust
+
+- 
+
 ## Safe First Commands
 
 ```bash
@@ -21,6 +25,10 @@
 ## Open Questions
 
 - 
+
+## Expected Outcome
+
+- `keep` / `discard` / `no-op` / `handoff`:
 
 ## Do Not Forget
 

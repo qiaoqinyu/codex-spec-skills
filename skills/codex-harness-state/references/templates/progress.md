@@ -8,9 +8,19 @@
 
 - id:
   status:
+  outcome:
   focus:
 
 ## Recent Verified Changes
+
+- change:
+  evidence:
+
+## Current Certainty
+
+- 
+
+## Untouched Scope
 
 - 
 

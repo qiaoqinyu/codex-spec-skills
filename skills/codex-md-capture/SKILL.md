@@ -14,6 +14,9 @@ This is a harness-aware guidance-layer skill. It owns durable Codex guidance
 truth, not session-state scaffolding such as progress logs, handoff files,
 bootstrap scripts, feature trackers, or full verification workflows.
 
+Human shortcut: use this for "turn this verified session learning into a stable
+rule".
+
 ## Use This Skill When
 
 - the current session revealed commands, workflows, gotchas, or constraints
@@ -45,16 +48,27 @@ organization work.
 
 - only capture learnings that satisfy the write-back gate in
   [references/capture-rubric.md](references/capture-rubric.md)
+- make the route decision explicit: say why this is durable write-back rather
+  than mutable state or structure repair
 - classify each surviving learning by stability horizon: `session fact`,
   `recurring pattern`, or `policy-level signal`
 - use the routing table in
   [references/destination-routing.md](references/destination-routing.md)
   before drafting edits
+- if the source learning comes from `.agents/state/*` or an experiment note,
+  preserve the link to the baseline, artifact paths, and evidence instead of
+  rewriting it as unsupported prose
 - run a dedup check against the target guidance before proposing any change
 - use the output contract in
   [references/output-template.md](references/output-template.md)
 - use [references/examples.md](references/examples.md) to distinguish
   write-back from `no-op`
+- use the shared outcome vocabulary:
+  - `keep`: the learning survives the gate and is worth proposing
+  - `discard`: the learning failed the gate and should not be promoted
+  - `no-op`: an equivalent rule already exists or nothing new survived
+  - `handoff`: the real problem belongs to `codex-harness-state` or
+    `codex-md-reconcile`
 - if no learning passes the gate, return a clear `no-op` result and stop
 - if the strongest conclusion is "this reveals a structure or routing problem",
   hand off to `$codex-md-reconcile` instead of forcing a write-back
@@ -74,6 +88,16 @@ organization work.
 
 Extract the smallest set of session outcomes that might be worth preserving.
 
+If the source is a state file or experiment note, keep the source contract
+attached:
+
+- baseline
+- changed variables
+- invariants
+- artifact paths
+- evidence
+- current outcome
+
 ### 2. Apply the write-back gate
 
 Keep only learnings that are:
@@ -82,6 +106,9 @@ Keep only learnings that are:
 - repeated or likely to recur
 - durable beyond the current session
 - relevant to the repository rather than generic advice
+
+Reject or hand off any candidate that is missing direct evidence, still sitting
+in a tentative review state, or would only make sense as mutable state.
 
 Return `no-op` if nothing survives this filter.
 
@@ -101,6 +128,8 @@ For each surviving learning:
 - choose the narrowest stable destination
 - state why that destination wins
 - state why the learning does not belong in the other likely destinations
+- explicitly rule out `.agents/state/*` when that is the next-most-plausible
+  home
 
 Also classify the learning as:
 
@@ -114,8 +143,10 @@ Use the template in [references/output-template.md](references/output-template.m
 
 Always include:
 
+- route decision
 - learning
 - evidence
+- baseline or source trace when it matters
 - stability
 - destination
 - why-not-elsewhere
@@ -133,3 +164,4 @@ After applying, verify:
 - the added guidance is not duplicate or contradictory
 - `AGENTS.md` stays short and routing-focused
 - no temporary or low-confidence material leaked into long-term docs
+- the final result is clearly one of `keep`, `discard`, `no-op`, or `handoff`

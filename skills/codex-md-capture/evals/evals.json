@@ -5,8 +5,24 @@
       "id": 1,
       "name": "Verified Write-Back",
       "prompt": "This session verified a new local smoke command that future agents should use. Capture it into the right Codex guidance file with a minimal proposal.",
-      "expected_output": "Destination map with evidence, stability classification, dedup check, and a minimal write-back proposal.",
-      "files": [],
+      "expected_route": "codex-md-capture",
+      "expected_outcome": "keep",
+      "expected_output": "Destination map with route decision, evidence, stability classification, dedup check, and a minimal write-back proposal.",
+      "allowed_targets": [
+        "AGENTS.md",
+        "specs/*.md",
+        "skills/*/references/*.md"
+      ],
+      "forbidden_targets": [
+        ".agents/state/*"
+      ],
+      "must_surface": [
+        "route decision",
+        "evidence",
+        "stability",
+        "destination",
+        "outcome"
+      ],
       "expectations": [
         "Classifies the learning by stability horizon",
         "Chooses a narrow canonical destination",
@@ -18,10 +34,19 @@
       "id": 2,
       "name": "Duplicate Rule No-Op",
       "prompt": "We re-confirmed a validation command that already exists in the canonical destination. Capture it.",
+      "expected_route": "codex-md-capture",
+      "expected_outcome": "no-op",
       "expected_output": "Explicit no-op because an equivalent rule already exists.",
-      "files": [
+      "allowed_targets": [],
+      "forbidden_targets": [
         "AGENTS.md",
-        "specs/commands.md"
+        "specs/*.md",
+        ".agents/state/*"
+      ],
+      "must_surface": [
+        "dedup check",
+        "route decision",
+        "outcome"
       ],
       "expectations": [
         "Checks the likely destination first",
@@ -34,10 +59,19 @@
       "id": 3,
       "name": "Structural Handoff",
       "prompt": "The session revealed that the real problem is stale routing between AGENTS.md and specs files. Capture that learning.",
+      "expected_route": "codex-md-capture",
+      "expected_outcome": "handoff",
       "expected_output": "Handoff to codex-md-reconcile rather than a direct write-back.",
-      "files": [
+      "allowed_targets": [],
+      "forbidden_targets": [
         "AGENTS.md",
-        "specs/index.md"
+        "specs/*.md",
+        ".agents/state/*"
+      ],
+      "must_surface": [
+        "route decision",
+        "handoff target",
+        "reason this is structural"
       ],
       "expectations": [
         "Identifies the problem as structural rather than factual",
@@ -50,13 +84,49 @@
       "id": 4,
       "name": "Low-Confidence Rejection",
       "prompt": "I think the repo should probably always use bun instead of npm, but we did not verify it. Capture it anyway.",
-      "expected_output": "Rejected learning or no-op because the candidate failed the write-back gate.",
-      "files": [],
+      "expected_route": "codex-md-capture",
+      "expected_outcome": "discard",
+      "expected_output": "Rejected learning because the candidate failed the write-back gate.",
+      "allowed_targets": [],
+      "forbidden_targets": [
+        "AGENTS.md",
+        "specs/*.md",
+        ".agents/state/*"
+      ],
+      "must_surface": [
+        "failed gate reason",
+        "route decision",
+        "outcome"
+      ],
       "expectations": [
         "Fails the verified gate",
         "Does not invent a durable rule",
         "Explains why the learning is rejected",
         "Says no files should change"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Mutable State Handoff",
+      "prompt": "Please capture the latest experiment board row, current blocker, and resume command so future sessions do not lose them.",
+      "expected_route": "codex-md-capture",
+      "expected_outcome": "handoff",
+      "expected_output": "Explicit handoff to codex-harness-state because the request is about mutable continuity rather than durable guidance.",
+      "allowed_targets": [],
+      "forbidden_targets": [
+        "AGENTS.md",
+        "specs/*.md"
+      ],
+      "must_surface": [
+        "route decision",
+        "handoff target",
+        "reason this belongs in mutable state"
+      ],
+      "expectations": [
+        "Recognizes progress, blocker, and resume command as mutable state",
+        "Does not force session continuity into durable docs",
+        "Routes to codex-harness-state",
+        "Keeps the durable-doc boundary explicit"
       ]
     }
   ]

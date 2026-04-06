@@ -59,6 +59,11 @@ Report shape:
 ```md
 ## Codex Guidance Report
 
+### Route Decision
+- chosen skill: ...
+- why this is not capture: ...
+- why this is not state: ...
+
 ### Guidance Map
 - layout shape: ...
 - entrypoints: ...
@@ -87,16 +92,25 @@ Report shape:
 
 ### Proposed Changes
 1. ...
+
+### Outcome
+- `keep` / `no-op` / `handoff`: ...
 ```
 
 Every proposal must include:
 
 - target file
 - why that file owns the fact
+- touched scope
+- untouched scope
 - exact diff or replacement block
 - change budget note if the change is larger than a small patch
 - why migration is worth the churn when you are changing a coherent existing
   layout
+
+If the correct answer is "leave the structure alone", use `no-op` and stop.
+If the real answer is "this is a state or narrow write-back problem", use
+`handoff` and stop.
 
 ## 5. Verify
 

@@ -4,6 +4,19 @@ Route each learning to the narrowest stable home.
 
 ## Decision Table
 
+### handoff to `$codex-harness-state`
+
+Use when:
+
+- the request is mainly about progress tracking, session continuity, or resume
+  instructions
+- the key artifact is a mutable track, experiment board row, or handoff note
+- the learning cannot stand on its own without current run context
+- the immediate need is to strengthen the state layer before any durable
+  write-back
+
+Do not force mutable run state into `AGENTS.md` or `specs/*.md`.
+
 ### `AGENTS.md`
 
 Use for:

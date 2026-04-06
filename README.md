@@ -39,6 +39,39 @@ Each skill follows the Codex skill layout:
 Use these skills when you want to keep Codex guidance clean, discoverable, and
 durable across sessions without mixing stable docs with mutable session state.
 
+## Quick Routes
+
+Use the human intent first, then map it to the skill:
+
+1. `继续任务 / 继续昨天的活 / 把实验别搞混`
+   Use `codex-harness-state`.
+2. `把这次已经验证的经验沉淀下来`
+   Use `codex-md-capture`.
+3. `整理文档结构 / 修路由 / 清重复`
+   Use `codex-md-reconcile`.
+
+If the request sounds like "just remember where we are", do not jump to
+`md-*`. If the request sounds like "this is now a stable rule", do not leave it
+only in `.agents/state/*`.
+
+## Shared Run Contract
+
+All three skills should make the same minimum facts explicit on every run:
+
+- route decision: why this request belongs to this skill and not the other two
+- baseline and evidence: what current fact set the run is grounded in
+- changed scope versus untouched scope: what may change and what must stay put
+- outcome: `keep`, `discard`, `no-op`, or `handoff`
+- next action: what should happen after this run
+
+Treat promotion as an explicit path, not an automatic side effect:
+
+```text
+mutable state -> verified candidate -> durable guidance
+```
+
+The middle step is optional and can end in `discard`, `no-op`, or `handoff`.
+
 ## Mental Model
 
 Think of the split like this:
@@ -63,6 +96,12 @@ Typical split:
 3. Use `codex-md-capture` after a session produces durable new project truth
    that should be written back into `AGENTS.md`, `specs/*.md`, or a related
    skill reference.
+
+Minimal run card for users:
+
+1. which skill was chosen, and why not the other two
+2. which files or layers may change, and which will not
+3. whether the result is `keep`, `discard`, `no-op`, or `handoff`
 
 Common confusion to avoid:
 

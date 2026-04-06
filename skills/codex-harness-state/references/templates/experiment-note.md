@@ -20,11 +20,23 @@
 
 - 
 
+## Untouched Scope
+
+- 
+
 ## Evidence
 
 - command:
 - config:
 - artifact paths:
+
+## Certainty
+
+- 
+
+## Outcome
+
+- `keep` / `discard` / `no-op` / `handoff`:
 
 ## Current Read
 

@@ -29,10 +29,20 @@ across sessions.
   known
 - move to `running` only after a real launch or implementation start
 - move to `review` only when outputs or code changes exist to inspect
-- move to `done` only when the intended question is answered or the task is
-  complete
+- move to `done` only when the intended question is answered and the final
+  `outcome` is recorded
 - use `blocked` instead of pretending progress is still active
 - use `archived` for abandoned or superseded tracks rather than deleting them
+
+## Decision Outcomes
+
+Track status and run outcome are separate.
+
+- `keep`: current evidence supports keeping the track or its latest result
+- `discard`: the latest hypothesis or result should not be carried forward
+- `no-op`: nothing new is worth carrying forward, but the state was checked
+- `handoff`: the next step belongs in durable guidance capture or doc
+  reconciliation rather than more state-only updates
 
 ## Required Fields Per Active Track
 
@@ -45,6 +55,10 @@ Every active board row should capture:
 - `changed_variables`
 - `invariants`
 - `artifact_paths`
+- `evidence`
+- `certainty`
+- `outcome`
+- `untouched_scope`
 - `next_action`
 - `updated_at`
 

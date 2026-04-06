@@ -13,6 +13,9 @@ experiment or workstream lifecycle management. It does not replace `AGENTS.md`
 or `specs/*.md`, but it may add a tiny `AGENTS.md` pointer so the state layer
 is discoverable.
 
+Human shortcut: use this for "continue the task", "set up a handoff", or
+"keep parallel tracks straight".
+
 ## Use This Skill When
 
 - the user wants state files such as `.agents/state/progress.md`,
@@ -44,6 +47,8 @@ Use `$codex-md-capture` for durable guidance write-back and
 
 - keep mutable state under `.agents/state/` at the repository root unless the
   repository already uses a coherent alternative path the user wants to keep
+- make the route decision explicit: say why this is a `state` run and why it is
+  not a durable-doc capture or doc-structure repair run
 - keep stable truth in `AGENTS.md`, `specs/*.md`, and skill references; keep
   mutable progress and handoff material in state files
 - if this skill creates or materially refreshes `.agents/state/*`, check
@@ -68,10 +73,26 @@ Use `$codex-md-capture` for durable guidance write-back and
   comparisons, or the user explicitly wants detailed run notes
 - record only verified current state; mark unknowns as unknown instead of
   guessing
-- every update should capture a timestamp, evidence source, current status,
-  next action, and blocker if one exists
+- every update should capture:
+  - `baseline`
+  - `changed_variables`
+  - `invariants`
+  - `artifact_paths`
+  - `evidence`
+  - `certainty`
+  - `outcome`
+  - `next_action`
+  - `updated_at`
+- use the shared outcome vocabulary:
+  - `keep`: the track or state update is worth keeping as the current truth
+  - `discard`: the track or hypothesis was invalidated
+  - `no-op`: nothing new should be written, but the state may still be checked
+  - `handoff`: the state reveals a durable-doc or structure problem that should
+    move to another skill
 - keep `session-handoff.md` action-oriented: where to resume, what to run, what
   changed, and what is unresolved
+- state can nominate a verified candidate for later promotion, but it does not
+  itself promote durable rules into `AGENTS.md` or `specs/*.md`
 - if the real gap is stable repo guidance, say so and hand off to
   `$codex-md-capture` or `$codex-md-reconcile`
 - if `AGENTS.md` is missing, badly stale, or needs more than a tiny routing
@@ -112,11 +133,12 @@ Fill them only with verified repo-specific facts.
 At minimum:
 
 - `progress.md` should state the current objective, active tracks, recent
-  verified changes, blockers, and next checkpoints
+  verified changes, blockers, next checkpoints, and what evidence currently
+  supports the state
 - `session-handoff.md` should state how to resume safely in the next session
 - `experiment-board.json` should list each active track with its status,
-  baseline, changed variables, invariant checks, artifact paths, and next
-  action
+  baseline, changed variables, invariant checks, artifact paths, evidence,
+  certainty, outcome, untouched scope, and next action
 - if `AGENTS.md` exists and lacks a runtime-state pointer, add the smallest
   routing note needed so future sessions can discover `.agents/state/*`
 
@@ -127,6 +149,7 @@ Before finalizing:
 - confirm referenced paths exist
 - confirm commands or scripts are real
 - confirm status labels match observed evidence
+- confirm `outcome` and `certainty` match the evidence you actually have
 - mark missing artifacts or ambiguous results explicitly
 - confirm any new `AGENTS.md` pointer matches the real state paths and does not
   over-describe them
@@ -140,4 +163,5 @@ After editing, verify:
 - any `AGENTS.md` change is limited to discoverability, not state duplication
 - no secrets or bulky logs were copied in
 - the board statuses use the allowed lifecycle states
+- every active track has evidence, certainty, and an explicit outcome
 - next-session resume steps are concrete enough to act on

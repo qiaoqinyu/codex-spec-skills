@@ -21,6 +21,21 @@ Every candidate learning must pass all four checks:
 - specific to the repository, workflow, environment, or reusable skill
 - not generic engineering advice
 
+## Promotion Prerequisites
+
+If the candidate comes from `.agents/state/*`, an experiment board, or a
+track note, it should also preserve the source contract:
+
+- baseline
+- changed variables
+- invariants
+- artifact paths
+- evidence
+- current outcome
+
+If those fields are missing, do not silently upgrade the candidate into durable
+guidance. Return `discard`, `no-op`, or `handoff`.
+
 ## Stability Horizon
 
 Classify every candidate that passes the gate:
@@ -49,6 +64,12 @@ Reject the candidate and return `no-op` or `rejected learning` when it is:
 
 Do not write back the candidate when:
 
+0. Source contract is too weak
+- the candidate points at a run, track, or experiment, but no baseline,
+  artifact path, or direct evidence survives
+- do not paraphrase this into a durable rule
+- hand off to `$codex-harness-state` if the state layer itself is too weak
+
 1. Duplicate or equivalent rule already exists
 - check the likely destination first
 - if the same rule already exists with equivalent meaning, return `no-op`
@@ -59,6 +80,15 @@ Do not write back the candidate when:
   or a stale guidance layout
 - do not force this into a factual write-back
 - hand off to `$codex-md-reconcile`
+
+## Decision Outcomes
+
+- `keep`: propose the minimal durable write-back
+- `discard`: reject the candidate because the gate failed
+- `no-op`: nothing new is needed because the rule already exists or nothing
+  survived
+- `handoff`: the real problem belongs to `codex-harness-state` or
+  `codex-md-reconcile`
 
 ## Confidence Bands
 

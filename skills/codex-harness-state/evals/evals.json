@@ -5,10 +5,23 @@
       "id": 1,
       "name": "Minimal Session Continuity Scaffold",
       "prompt": "This repo already has AGENTS.md and specs files, but tomorrow's session keeps losing context. Create the smallest useful state layer.",
-      "expected_output": "Progress plus handoff scaffold under .agents/state/, plus a tiny AGENTS routing note, with a clear no-overlap boundary against durable docs.",
-      "files": [
-        "AGENTS.md",
-        "specs/commands.md"
+      "expected_route": "codex-harness-state",
+      "expected_outcome": "keep",
+      "expected_output": "Progress plus handoff scaffold under .agents/state/, with a tiny AGENTS routing note only if needed and a clear no-overlap boundary against durable docs.",
+      "allowed_targets": [
+        ".agents/state/progress.md",
+        ".agents/state/session-handoff.md",
+        "AGENTS.md"
+      ],
+      "forbidden_targets": [
+        "specs/*.md"
+      ],
+      "must_surface": [
+        "route decision",
+        "current objective or baseline",
+        "evidence",
+        "outcome",
+        "next action"
       ],
       "expectations": [
         "Chooses progress.md and session-handoff.md as the minimum scaffold",
@@ -22,11 +35,25 @@
       "id": 2,
       "name": "Parallel Experiment Board",
       "prompt": "We now have exp28a, exp28b, and exp28c in flight, and the team keeps mixing up what each one changed. Set up the right state files.",
-      "expected_output": "Adds an experiment board and, if justified, per-track notes with clear lifecycle states and invariants.",
-      "files": [
-        "configs/exp28a.json",
-        "configs/exp28b.json",
-        "configs/exp28c.json"
+      "expected_route": "codex-harness-state",
+      "expected_outcome": "keep",
+      "expected_output": "Adds an experiment board and, if justified, per-track notes with clear lifecycle states, evidence, invariants, and outcomes.",
+      "allowed_targets": [
+        ".agents/state/experiment-board.json",
+        ".agents/state/experiments/*.md",
+        ".agents/state/progress.md",
+        ".agents/state/session-handoff.md"
+      ],
+      "forbidden_targets": [
+        "AGENTS.md",
+        "specs/*.md"
+      ],
+      "must_surface": [
+        "baseline",
+        "changed_variables",
+        "invariants",
+        "artifact_paths",
+        "outcome"
       ],
       "expectations": [
         "Adds experiment-board.json for parallel tracking",
@@ -39,9 +66,21 @@
       "id": 3,
       "name": "State Layer Discoverability",
       "prompt": "Set up .agents/state/progress.md and session-handoff.md, but keep AGENTS.md clean. Future agents still need to know those files exist.",
+      "expected_route": "codex-harness-state",
+      "expected_outcome": "keep",
       "expected_output": "A tiny AGENTS routing note that points to the state files without copying mutable details into durable docs.",
-      "files": [
+      "allowed_targets": [
+        ".agents/state/progress.md",
+        ".agents/state/session-handoff.md",
         "AGENTS.md"
+      ],
+      "forbidden_targets": [
+        "specs/*.md"
+      ],
+      "must_surface": [
+        "route decision",
+        "why not durable docs",
+        "outcome"
       ],
       "expectations": [
         "Keeps the AGENTS change short and routing-only",
@@ -54,10 +93,18 @@
       "id": 4,
       "name": "Stable Docs Boundary",
       "prompt": "Please add the verified cluster launch command we discovered today into the right long-term Codex doc, and also make sure future sessions remember it.",
+      "expected_route": "codex-harness-state",
+      "expected_outcome": "handoff",
       "expected_output": "Calls out that durable guidance write-back belongs to codex-md-capture, while state files only hold current-session continuity if needed.",
-      "files": [
+      "allowed_targets": [],
+      "forbidden_targets": [
         "AGENTS.md",
-        "specs/commands.md"
+        "specs/*.md"
+      ],
+      "must_surface": [
+        "route decision",
+        "handoff target",
+        "reason the request is out of scope"
       ],
       "expectations": [
         "Identifies the durable-doc portion as out of scope for this skill",
@@ -70,11 +117,22 @@
       "id": 5,
       "name": "Reality-Checked Refresh",
       "prompt": "The repo already has .agents/state files, but they may be stale. Refresh them from the actual artifact paths and mark unknowns honestly.",
-      "expected_output": "Updated state files that reflect real paths, status, and blockers without guessing missing evidence.",
-      "files": [
+      "expected_route": "codex-harness-state",
+      "expected_outcome": "keep",
+      "expected_output": "Updated state files that reflect real paths, status, blockers, certainty, and outcome without guessing missing evidence.",
+      "allowed_targets": [
         ".agents/state/progress.md",
         ".agents/state/session-handoff.md",
         ".agents/state/experiment-board.json"
+      ],
+      "forbidden_targets": [
+        "specs/*.md"
+      ],
+      "must_surface": [
+        "evidence",
+        "certainty",
+        "outcome",
+        "next action"
       ],
       "expectations": [
         "Checks existing state before replacing it",

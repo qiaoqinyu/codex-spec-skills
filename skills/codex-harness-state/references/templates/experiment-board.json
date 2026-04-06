@@ -4,7 +4,7 @@
     {
       "id": "exp28a",
       "goal": "Compare one changed variable against a clear baseline.",
-      "status": "ready",
+      "status": "review",
       "baseline": "exp27b",
       "changed_variables": [
         "learning_rate"
@@ -15,6 +15,17 @@
       ],
       "artifact_paths": [
         "results/exp28a"
+      ],
+      "evidence": [
+        "results/exp28a/metrics.json exists",
+        "python eval.py --config configs/exp28a.json exited 0 on 2026-04-07"
+      ],
+      "certainty": "verified_candidate",
+      "outcome": "keep",
+      "untouched_scope": [
+        "training data",
+        "evaluation metric",
+        "artifact naming"
       ],
       "next_action": "Run the exact command listed in session-handoff.md",
       "updated_at": "YYYY-MM-DDTHH:MM:SSZ"

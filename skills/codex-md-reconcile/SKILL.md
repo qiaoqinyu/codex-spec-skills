@@ -18,6 +18,9 @@ state, handoff logs, bootstrap scripts, feature trackers, or runtime
 verification scaffolding. It may still route `AGENTS.md` into an existing
 `.agents/state/*` layer so that mutable state is discoverable.
 
+Human shortcut: use this for "organize the docs", "repair routing", or "clean
+up guidance ownership".
+
 ## Use This Skill When
 
 - the user asks to reconcile, repair, or improve the active Codex guidance
@@ -53,6 +56,8 @@ Use `$codex-md-capture` for session delta write-back.
   [references/reconcile-workflow.md](references/reconcile-workflow.md)
 - score the guidance surface with
   [references/quality-criteria.md](references/quality-criteria.md)
+- make the route decision explicit: say why this is a `reconcile` run and why
+  it is not a narrow write-back or mutable-state request
 - classify the repository layout before proposing repairs:
   `default_codex_shape`, `coherent_alt_router`, `migration_mixed`, or
   `broken_or_stale`
@@ -66,6 +71,11 @@ Use `$codex-md-capture` for session delta write-back.
 - if `.agents/state/*` exists and is part of the active workflow, treat a tiny
   `AGENTS.md` pointer into it as compatible guidance routing rather than as
   state ownership
+- use the shared outcome vocabulary:
+  - `keep`: propose the minimal repair
+  - `discard`: reject a repair idea that is not supported by repo reality
+  - `no-op`: the current structure is already coherent enough to leave alone
+  - `handoff`: the real problem is state continuity or narrow durable write-back
 - treat a coherent alternative router stack as compatible unless it is causing
   confusion, duplication, or stale guidance
 - include proof of work in the report: files inspected, routers checked,
@@ -124,6 +134,8 @@ Every issue should land in one of:
 - `should improve`
 - `leave alone`
 
+If the best answer is "leave the structure alone", say `no-op` explicitly.
+
 ### 4. Propose the minimal repair
 
 Use the template in
@@ -141,6 +153,13 @@ Default priorities:
 
 If the repository uses a coherent alternative router stack, prefer clarifying
 roles and reducing confusion over normalizing it to the default shape.
+
+Every proposal should also make explicit:
+
+- why this belongs to `codex-md-reconcile`
+- why it is not a `codex-md-capture` or `codex-harness-state` task
+- touched scope versus untouched scope
+- expected outcome: `keep`, `no-op`, or `handoff`
 
 ### 5. Apply with approval and verify
 
