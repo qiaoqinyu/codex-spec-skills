@@ -1,0 +1,357 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.request
+
+
+DEFAULT_BASE_URL = "https://tavily.ivanli.cc/api/tavily"
+
+
+def positive_int(value: str) -> int:
+    parsed = int(value)
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("must be > 0")
+    return parsed
+
+
+def non_negative_int(value: str) -> int:
+    parsed = int(value)
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("must be >= 0")
+    return parsed
+
+
+def csv_list(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def add_common_args(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--base-url",
+        default=os.environ.get("TAVILY_HIKARI_BASE_URL", DEFAULT_BASE_URL),
+        help="Base API URL. Defaults to TAVILY_HIKARI_BASE_URL or the ivanli endpoint.",
+    )
+    parser.add_argument(
+        "--token",
+        default=os.environ.get("TAVILY_HIKARI_TOKEN"),
+        help="Bearer token. Defaults to TAVILY_HIKARI_TOKEN.",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=positive_int,
+        default=60,
+        help="Request timeout in seconds. Default: 60.",
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Print compact JSON instead of pretty JSON.",
+    )
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="tavily-hikari",
+        description="Direct Tavily Hikari HTTP API client.",
+    )
+
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    search = subparsers.add_parser("search", help="Search the web.")
+    add_common_args(search)
+    search.add_argument("query", help="Search query.")
+    search.add_argument(
+        "--topic",
+        choices=["general", "news", "finance"],
+        default="general",
+    )
+    search.add_argument(
+        "--search-depth",
+        choices=["ultra-fast", "fast", "basic", "advanced"],
+        default="basic",
+    )
+    search.add_argument("--max-results", type=non_negative_int, default=5)
+    search.add_argument("--time-range", choices=["day", "week", "month", "year"])
+    search.add_argument("--start-date")
+    search.add_argument("--end-date")
+    search.add_argument("--country", default="")
+    search.add_argument("--include-domains", type=csv_list, default=[])
+    search.add_argument("--exclude-domains", type=csv_list, default=[])
+    search.add_argument("--include-answer", choices=["basic", "advanced"])
+    search.add_argument("--include-raw-content", choices=["markdown", "text"])
+    search.add_argument("--include-images", action="store_true")
+    search.add_argument("--include-image-descriptions", action="store_true")
+    search.add_argument("--include-favicon", action="store_true")
+    search.add_argument("--chunks-per-source", type=positive_int)
+
+    extract = subparsers.add_parser("extract", help="Extract content from URLs.")
+    add_common_args(extract)
+    extract.add_argument("urls", nargs="+", help="One or more URLs.")
+    extract.add_argument("--extract-depth", choices=["basic", "advanced"], default="basic")
+    extract.add_argument("--format", choices=["markdown", "text"], default="markdown")
+    extract.add_argument("--query", default="")
+    extract.add_argument("--include-images", action="store_true")
+    extract.add_argument("--include-favicon", action="store_true")
+
+    map_parser = subparsers.add_parser("map", help="Map a website.")
+    add_common_args(map_parser)
+    map_parser.add_argument("url", help="Root URL.")
+    map_parser.add_argument("--max-depth", type=positive_int, default=1)
+    map_parser.add_argument("--max-breadth", type=positive_int, default=20)
+    map_parser.add_argument("--limit", type=positive_int, default=50)
+    map_parser.add_argument("--instructions", default="")
+    map_parser.add_argument("--select-paths", type=csv_list, default=[])
+    map_parser.add_argument("--select-domains", type=csv_list, default=[])
+    map_parser.add_argument("--allow-external", action="store_true")
+
+    crawl = subparsers.add_parser("crawl", help="Crawl a website.")
+    add_common_args(crawl)
+    crawl.add_argument("url", help="Root URL.")
+    crawl.add_argument("--max-depth", type=positive_int, default=1)
+    crawl.add_argument("--max-breadth", type=positive_int, default=20)
+    crawl.add_argument("--limit", type=positive_int, default=50)
+    crawl.add_argument("--instructions", default="")
+    crawl.add_argument("--select-paths", type=csv_list, default=[])
+    crawl.add_argument("--select-domains", type=csv_list, default=[])
+    crawl.add_argument("--allow-external", action="store_true")
+    crawl.add_argument("--extract-depth", choices=["basic", "advanced"], default="basic")
+    crawl.add_argument("--format", choices=["markdown", "text"], default="markdown")
+    crawl.add_argument("--include-favicon", action="store_true")
+
+    research = subparsers.add_parser("research", help="Run Tavily research.")
+    add_common_args(research)
+    research.add_argument("input", help="Research prompt.")
+    research.add_argument("--model", choices=["mini", "pro", "auto"], default="auto")
+    research.add_argument("--no-wait", action="store_true")
+    research.add_argument("--poll-interval", type=positive_int, default=10)
+    research.add_argument("--wait-timeout", type=positive_int, default=600)
+
+    research_status = subparsers.add_parser(
+        "research-status",
+        help="Check research task status.",
+    )
+    add_common_args(research_status)
+    research_status.add_argument("request_id", help="Research request ID.")
+
+    research_poll = subparsers.add_parser(
+        "research-poll",
+        help="Poll research task until completion.",
+    )
+    add_common_args(research_poll)
+    research_poll.add_argument("request_id", help="Research request ID.")
+    research_poll.add_argument("--poll-interval", type=positive_int, default=10)
+    research_poll.add_argument("--wait-timeout", type=positive_int, default=600)
+
+    return parser
+
+
+def build_payload(args: argparse.Namespace) -> tuple[str, dict]:
+    if args.command == "search":
+        payload = {
+            "query": args.query,
+            "topic": args.topic,
+            "search_depth": args.search_depth,
+            "max_results": args.max_results,
+            "time_range": args.time_range,
+            "start_date": args.start_date or "",
+            "end_date": args.end_date or "",
+            "country": args.country,
+            "include_domains": args.include_domains,
+            "exclude_domains": args.exclude_domains,
+            "include_answer": args.include_answer,
+            "include_raw_content": args.include_raw_content,
+            "include_images": args.include_images,
+            "include_image_descriptions": args.include_image_descriptions,
+            "include_favicon": args.include_favicon,
+        }
+        if args.chunks_per_source is not None:
+            payload["chunks_per_source"] = args.chunks_per_source
+        return "/search", remove_none(payload)
+
+    if args.command == "extract":
+        return "/extract", remove_none(
+            {
+                "urls": args.urls,
+                "extract_depth": args.extract_depth,
+                "format": args.format,
+                "query": args.query,
+                "include_images": args.include_images,
+                "include_favicon": args.include_favicon,
+            }
+        )
+
+    if args.command == "map":
+        return "/map", remove_none(
+            {
+                "url": args.url,
+                "max_depth": args.max_depth,
+                "max_breadth": args.max_breadth,
+                "limit": args.limit,
+                "instructions": args.instructions,
+                "select_paths": args.select_paths,
+                "select_domains": args.select_domains,
+                "allow_external": args.allow_external,
+            }
+        )
+
+    if args.command == "crawl":
+        return "/crawl", remove_none(
+            {
+                "url": args.url,
+                "max_depth": args.max_depth,
+                "max_breadth": args.max_breadth,
+                "limit": args.limit,
+                "instructions": args.instructions,
+                "select_paths": args.select_paths,
+                "select_domains": args.select_domains,
+                "allow_external": args.allow_external,
+                "extract_depth": args.extract_depth,
+                "format": args.format,
+                "include_favicon": args.include_favicon,
+            }
+        )
+
+    if args.command == "research":
+        return "/research", {"input": args.input, "model": args.model}
+
+    if args.command == "research-status":
+        return f"/research/{args.request_id}", {}
+
+    if args.command == "research-poll":
+        return f"/research/{args.request_id}", {}
+
+    raise ValueError(f"unsupported command: {args.command}")
+
+
+def remove_none(payload: dict) -> dict:
+    cleaned = {}
+    for key, value in payload.items():
+        if value is None:
+            continue
+        cleaned[key] = value
+    return cleaned
+
+
+def request_json(method: str, url: str, token: str, payload: dict, timeout: int) -> tuple[int, dict]:
+    body = json.dumps(payload).encode("utf-8") if method != "GET" else None
+    request = urllib.request.Request(
+        url,
+        data=body,
+        method=method,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            raw = response.read().decode("utf-8", "replace")
+            return response.status, json.loads(raw)
+    except urllib.error.HTTPError as error:
+        raw = error.read().decode("utf-8", "replace")
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            parsed = {"error": raw or error.reason, "status": error.code}
+        return error.code, parsed
+    except urllib.error.URLError as error:
+        reason = getattr(error, "reason", str(error))
+        return 599, {"error": str(reason), "status": 599}
+
+
+def poll_research(
+    base_url: str,
+    token: str,
+    request_id: str,
+    request_timeout: int,
+    wait_timeout: int,
+    poll_interval: int,
+) -> tuple[int, dict]:
+    url = f"{base_url}/research/{request_id}"
+    elapsed = 0
+    status = 599
+    response = {"request_id": request_id, "status": "timeout"}
+
+    while elapsed < wait_timeout:
+        status, response = request_json("GET", url, token, {}, request_timeout)
+        if status >= 400:
+            return status, response
+        if response.get("status") in ("completed", "failed"):
+            return status, response
+        time.sleep(poll_interval)
+        elapsed += poll_interval
+
+    return 598, response
+
+
+def print_json(data: dict, compact: bool) -> None:
+    if compact:
+        print(json.dumps(data, ensure_ascii=False, separators=(",", ":")))
+        return
+    print(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True))
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+
+    if not args.token:
+        print(
+            "Missing token. Set TAVILY_HIKARI_TOKEN or pass --token.",
+            file=sys.stderr,
+        )
+        return 2
+
+    base_url = args.base_url.rstrip("/")
+    path, payload = build_payload(args)
+    url = f"{base_url}{path}"
+
+    if args.command == "research":
+        status, data = request_json("POST", url, args.token, payload, args.timeout)
+        if status >= 400:
+            print_json(data, args.json)
+            return 1
+        if args.no_wait or data.get("status") in ("completed", "failed") or data.get("content"):
+            print_json(data, args.json)
+            return 0
+        request_id = data.get("request_id")
+        if not request_id:
+            print_json(data, args.json)
+            return 1
+        status, data = poll_research(
+            base_url,
+            args.token,
+            request_id,
+            args.timeout,
+            args.wait_timeout,
+            args.poll_interval,
+        )
+        print_json(data, args.json)
+        return 0 if status < 400 and data.get("status") != "failed" else 1
+
+    if args.command == "research-poll":
+        status, data = poll_research(
+            base_url,
+            args.token,
+            args.request_id,
+            args.timeout,
+            args.wait_timeout,
+            args.poll_interval,
+        )
+        print_json(data, args.json)
+        return 0 if status < 400 and data.get("status") != "failed" else 1
+
+    method = "GET" if args.command == "research-status" else "POST"
+    status, data = request_json(method, url, args.token, payload, args.timeout)
+    print_json(data, args.json)
+    return 0 if 200 <= status < 300 else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

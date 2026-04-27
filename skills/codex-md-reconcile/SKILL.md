@@ -68,6 +68,10 @@ Use `$codex-md-capture` for session delta write-back.
 - verify every proposed repair with
   [references/verification-checklist.md](references/verification-checklist.md)
 - use [references/examples.md](references/examples.md) to avoid over-repair
+- preserve context budget: prefer pointers, ownership clarification, and small
+  routing repairs over copying large rule blocks into the entrypoint
+- do not turn `AGENTS.md` into a harness encyclopedia or normalize a coherent
+  alternative router stack just to match the default shape
 - if `.agents/state/*` exists and is part of the active workflow, treat a tiny
   `AGENTS.md` pointer into it as compatible guidance routing rather than as
   state ownership

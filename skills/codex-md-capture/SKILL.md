@@ -48,6 +48,11 @@ organization work.
 
 - only capture learnings that satisfy the write-back gate in
   [references/capture-rubric.md](references/capture-rubric.md)
+- treat bad guidance as context pollution: external articles, session summaries,
+  and generic best practices must have repo-specific evidence before they can be
+  promoted into durable docs
+- prefer `discard` or `no-op` over adding a plausible but weak rule that future
+  agents will have to carry in context
 - make the route decision explicit: say why this is durable write-back rather
   than mutable state or structure repair
 - classify each surviving learning by stability horizon: `session fact`,

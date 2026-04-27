@@ -140,6 +140,37 @@
         "Keeps the layer lean instead of rewriting everything",
         "Preserves continuity while correcting stale entries"
       ]
+    },
+    {
+      "id": 6,
+      "name": "Sandbox Resume Context",
+      "prompt": "A long-running agent task was interrupted after creating a separate worktree, requesting write permissions, and starting a background verification command. Refresh the handoff so the next session can resume safely.",
+      "expected_route": "codex-harness-state",
+      "expected_outcome": "keep",
+      "expected_output": "State files capture the worktree, permission or sandbox boundary, long-running command, artifact paths, blockers, certainty, and next resume action without promoting temporary state into durable guidance.",
+      "allowed_targets": [
+        ".agents/state/progress.md",
+        ".agents/state/session-handoff.md",
+        ".agents/state/experiment-board.json"
+      ],
+      "forbidden_targets": [
+        "AGENTS.md",
+        "specs/*.md"
+      ],
+      "must_surface": [
+        "worktree or branch",
+        "sandbox or permission boundary",
+        "long-running command",
+        "artifact_paths",
+        "certainty",
+        "next_action"
+      ],
+      "expectations": [
+        "Records the execution context needed for safe resume",
+        "Marks unknown runtime facts explicitly instead of guessing",
+        "Keeps temporary run state out of durable guidance",
+        "Does not invent a scheduler or broader automation platform"
+      ]
     }
   ]
 }

@@ -128,6 +128,32 @@
         "Routes to codex-harness-state",
         "Keeps the durable-doc boundary explicit"
       ]
+    },
+    {
+      "id": 6,
+      "name": "External Principle Rejection",
+      "prompt": "We read a good article saying every repo should use subagents aggressively and always write the lesson into AGENTS.md, but this repository has no evidence that the rule is needed. Capture it anyway.",
+      "expected_route": "codex-md-capture",
+      "expected_outcome": "discard",
+      "expected_output": "Rejected learning because an external principle without repo-specific evidence would create weak durable guidance.",
+      "allowed_targets": [],
+      "forbidden_targets": [
+        "AGENTS.md",
+        "specs/*.md",
+        ".agents/state/*"
+      ],
+      "must_surface": [
+        "failed gate reason",
+        "repo-specific evidence",
+        "route decision",
+        "outcome"
+      ],
+      "expectations": [
+        "Treats unverified external guidance as context pollution risk",
+        "Requires repository evidence before durable write-back",
+        "Prefers discard or no-op over plausible but weak rules",
+        "Does not add generic best practices to AGENTS.md"
+      ]
     }
   ]
 }

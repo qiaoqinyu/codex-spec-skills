@@ -51,6 +51,11 @@ Use `$codex-md-capture` for durable guidance write-back and
   not a durable-doc capture or doc-structure repair run
 - keep stable truth in `AGENTS.md`, `specs/*.md`, and skill references; keep
   mutable progress and handoff material in state files
+- record the execution context needed for safe resume when it matters: branch or
+  worktree, sandbox or permission boundaries, long-running commands, artifact
+  paths, recovery entrypoints, blockers, and current certainty
+- record enough to resume safely without turning the state layer into a
+  scheduler, automation platform, transcript dump, or durable guidance store
 - if this skill creates or materially refreshes `.agents/state/*`, check
   whether `AGENTS.md` has a minimal runtime-state pointer
 - if the pointer is missing and `AGENTS.md` is otherwise coherent, add only a

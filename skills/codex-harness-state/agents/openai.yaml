@@ -1,4 +1,8 @@
 interface:
   display_name: "Codex Harness State"
   short_description: "State and handoff scaffolding for Codex"
-  default_prompt: "Use $codex-harness-state to create or refresh project-local progress, handoff, and experiment tracking files under .agents/state/."
+  default_prompt: >-
+    Use $codex-harness-state to create or refresh project-local progress,
+    handoff, and experiment tracking files under .agents/state/. Capture the
+    execution context needed for safe resume, but do not write durable guidance
+    or build a full automation platform.

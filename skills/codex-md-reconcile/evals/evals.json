@@ -132,6 +132,32 @@
         "Keeps guidance repair separate from harness scaffolding",
         "Avoids pretending the docs alone solve the problem"
       ]
+    },
+    {
+      "id": 6,
+      "name": "Context Budget Over-Repair",
+      "prompt": "This repo has a short AGENTS.md pointing to README.md and skill references. Please reconcile it by adding a long harness doctrine section and normalizing everything into specs/*.md.",
+      "expected_route": "codex-md-reconcile",
+      "expected_outcome": "no-op",
+      "expected_output": "Leave-alone or minimal should-improve result that preserves the coherent router stack and refuses context-heavy normalization.",
+      "allowed_targets": [],
+      "forbidden_targets": [
+        "AGENTS.md",
+        "specs/*.md",
+        "rules/*"
+      ],
+      "must_surface": [
+        "layout classification",
+        "context budget",
+        "canonical ownership",
+        "outcome"
+      ],
+      "expectations": [
+        "Recognizes a coherent alternative router stack",
+        "Refuses to turn AGENTS.md into a harness encyclopedia",
+        "Does not introduce specs or rules layers without payoff",
+        "Prefers pointers and ownership clarification over large copied rules"
+      ]
     }
   ]
 }
