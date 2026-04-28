@@ -1,0 +1,318 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "instructions": [
+    "/home/qyqiao/.config/opencode/AGENTS.md"
+  ],
+  "mcp": {
+    "exa": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.exa.ai/mcp"
+    },
+    "fast-context": {
+      "command": [
+        "npx",
+        "-y",
+        "fast-cxt-mcp"
+      ],
+      "enabled": true,
+      "environment": {
+        "WINDSURF_API_KEY": "{env:WINDSURF_API_KEY}"
+      },
+      "type": "local"
+    },
+    "mcp-deepwiki": {
+      "command": [
+        "npx",
+        "-y",
+        "mcp-deepwiki@latest"
+      ],
+      "enabled": true,
+      "type": "local"
+    }
+  },
+  "model": "openai/gpt-5.5",
+  "agent": {
+    "general": {
+      "description": "Execution-focused role for implementation and fixes.",
+      "mode": "subagent",
+      "model": "openai/gpt-5.4",
+      "reasoningEffort": "xhigh",
+      "prompt": "Own bounded implementation tasks from the parent agent. Make the smallest defensible change, keep scope tight, and validate the behavior you changed. Do not drift into unrelated refactors or edits."
+    },
+    "explore": {
+      "description": "Fast codebase explorer for read-heavy tasks.",
+      "mode": "subagent",
+      "model": "openai/gpt-5.4-mini",
+      "reasoningEffort": "xhigh",
+      "prompt": "Stay in exploration mode. Gather evidence with focused searches and targeted file reads, then summarize what you verified. Do not edit files or suggest broad fixes unless the parent agent explicitly asks for them.",
+      "tools": {
+        "write": false,
+        "edit": false
+      }
+    },
+    "monitor": {
+      "description": "Long-running command and task monitoring role.",
+      "mode": "subagent",
+      "model": "openai/gpt-5.4-mini",
+      "reasoningEffort": "xhigh",
+      "prompt": "Monitor long-running commands or background tasks for the parent agent. Report status changes, failures, and completion clearly, with timestamps or concrete state when useful. Do not make unrelated edits while monitoring.",
+      "tools": {
+        "write": false,
+        "edit": false
+      }
+    },
+    "reviewer": {
+      "description": "PR reviewer focused on correctness, security, and missing tests.",
+      "mode": "subagent",
+      "model": "openai/gpt-5.4",
+      "reasoningEffort": "xhigh",
+      "prompt": "{file:/home/qyqiao/.config/opencode/prompts/reviewer.md}",
+      "tools": {
+        "write": false,
+        "edit": false
+      }
+    },
+    "researcher": {
+      "description": "Read-only web research and information retrieval specialist.",
+      "mode": "subagent",
+      "model": "openai/gpt-5.4-mini",
+      "reasoningEffort": "xhigh",
+      "prompt": "{file:/home/qyqiao/.config/opencode/prompts/researcher.md}",
+      "tools": {
+        "write": false,
+        "edit": false
+      }
+    }
+  },
+  "permission": {
+    "*": "allow",
+    "lsp": "allow",
+    "external_directory": {
+      "~/**": "allow"
+    },
+    "bash": {
+      "rm": "deny",
+      "rm *": "deny",
+      "sudo *": "ask",
+      "git push *": "ask"
+    }
+  },
+  "plugin": [
+    "file:///home/qyqiao/.config/opencode/node_modules/@tarquinen/opencode-dcp/dist/index.js"
+  ],
+  "provider": {
+    "cchGPT": {
+      "models": {
+        "gpt-5.2": {
+          "id": "gpt-5.2",
+          "limit": {
+            "context": 400000,
+            "input": 272000,
+            "output": 128000
+          },
+          "name": "GPT-5.2",
+          "options": {
+            "include": [
+              "reasoning.encrypted_content"
+            ],
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "store": false,
+            "textVerbosity": "medium"
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            }
+          }
+        },
+        "gpt-5.3-codex": {
+          "id": "gpt-5.3-codex",
+          "limit": {
+            "context": 400000,
+            "input": 272000,
+            "output": 128000
+          },
+          "name": "GPT-5.3 Codex",
+          "options": {
+            "include": [
+              "reasoning.encrypted_content"
+            ],
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "store": false,
+            "textVerbosity": "medium"
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            }
+          }
+        },
+        "gpt-5.4": {
+          "id": "gpt-5.4",
+          "limit": {
+            "context": 400000,
+            "input": 272000,
+            "output": 128000
+          },
+          "name": "GPT-5.4",
+          "options": {
+            "include": [
+              "reasoning.encrypted_content"
+            ],
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "store": false,
+            "textVerbosity": "medium"
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            }
+          }
+        },
+        "gpt-5.5": {
+          "id": "gpt-5.5",
+          "limit": {
+            "context": 400000,
+            "input": 272000,
+            "output": 128000
+          },
+          "name": "GPT-5.5",
+          "options": {
+            "include": [
+              "reasoning.encrypted_content"
+            ],
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "store": false,
+            "textVerbosity": "medium"
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            }
+          }
+        },
+        "gpt-5.4-mini": {
+          "id": "gpt-5.4-mini",
+          "limit": {
+            "context": 400000,
+            "input": 272000,
+            "output": 128000
+          },
+          "name": "GPT-5.4 Mini",
+          "options": {
+            "include": [
+              "reasoning.encrypted_content"
+            ],
+            "reasoningEffort": "medium",
+            "reasoningSummary": "auto",
+            "store": false,
+            "textVerbosity": "medium"
+          },
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": "auto",
+              "textVerbosity": "medium"
+            }
+          }
+        }
+      },
+      "name": "GPT via cch",
+      "npm": "@ai-sdk/openai",
+      "options": {
+        "apiKey": "{env:CCH_API_KEY_opencode}",
+        "baseURL": "https://cch.4402042.xyz/v1",
+        "setCacheKey": true
+      }
+    }
+  }
+}

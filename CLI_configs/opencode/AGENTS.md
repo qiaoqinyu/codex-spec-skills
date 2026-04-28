@@ -25,7 +25,7 @@
 - SHOULD：文档页、博客、说明页优先用 `webfetch` 抓正文；如果用户明确要求“打开页面看看”、需要看界面、交互、登录、按钮、截图，再用浏览器技能。
 - MUST：GitHub 仓库、issue、PR、commit、release、Actions 等任务优先用 `gh`。
 - MUST：库、框架、SDK、CLI、云服务文档优先用 `ctx7`；先跑 `library`，再跑 `docs`，不要跳步骤。
-- SHOULD：遇到 Tavily 类网页搜索、提取、抓取、研究需求时，默认优先用 `tvly` CLI；如果 `tvly` 配额不够、认证失效，或当前需求必须走自定义 Hikari 端点，再切到 `tavily-hikari-local` skill。
+- SHOULD：遇到 Tavily 类网页搜索、提取、抓取、研究需求时，默认优先用 `tvly` CLI；如果 `tvly` 配额不够、认证失效，下一首选必须是 `tavily-hikari-local` skill，不要直接跳到非 Tavily 工具；当前需求必须走自定义 Hikari 端点时也优先用 `tavily-hikari-local`。
 - SHOULD：Tavily 在未知 URL 时，先 `search` 定位来源，再对命中的少量目标 URL 做 `extract`；只有明确需要多页内容时再用 `crawl`，只有明确需要多来源综合分析时再用 `research`。
 - SHOULD：除非当前任务明确需要，不要在 `search` 阶段默认拉太多原文，避免结果过长、噪音过多，影响 OpenCode 后续读取和总结。
 - MUST：本地代码库结构不清楚、需要摸调用链或找入口时，优先用 `fast-context` 做探索，再精读文件。

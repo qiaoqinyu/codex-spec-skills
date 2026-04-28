@@ -1,0 +1,97 @@
+{
+  "enabled": true,
+  "debug": false,
+
+  "pruneNotification": "minimal",
+  "pruneNotificationType": "toast",
+
+  "commands": {
+    "enabled": true,
+    "protectedTools": []
+  },
+
+  "manualMode": {
+    "enabled": false,
+    "automaticStrategies": true
+  },
+
+  "turnProtection": {
+    "enabled": true,
+    "turns": 3
+  },
+
+  "experimental": {
+    "allowSubAgents": false,
+    "customPrompts": false
+  },
+
+  "protectedFilePatterns": [
+    "**/package.json",
+    "**/tsconfig.json",
+    "**/Cargo.toml",
+    "**/AGENTS.md",
+    "**/specs/**/*.md",
+    "**/.agents/state/session-handoff.md",
+    "**/.agents/state/progress.md",
+    "**/.agents/state/experiment-board.json"
+  ],
+
+  "compress": {
+    "mode": "range",
+    "permission": "allow",
+    "showCompression": false,
+    "summaryBuffer": false,
+
+    "maxContextLimit": 160000,
+    "minContextLimit": 80000,
+
+    "modelMaxLimits": {
+      "openai/gpt-5.5": 220000,
+      "openai/gpt-5.4": 220000,
+      "openai/gpt-5.4-mini": 220000,
+
+      "cchGPT/gpt-5.5": 220000,
+      "cchGPT/gpt-5.4": 220000,
+      "cchGPT/gpt-5.4-mini": 220000,
+      "cchGPT/gpt-5.3-codex": 220000,
+      "cchGPT/gpt-5.2": 220000
+    },
+
+    "modelMinLimits": {
+      "openai/gpt-5.5": 140000,
+      "openai/gpt-5.4": 140000,
+      "openai/gpt-5.4-mini": 140000,
+
+      "cchGPT/gpt-5.5": 140000,
+      "cchGPT/gpt-5.4": 140000,
+      "cchGPT/gpt-5.4-mini": 140000,
+      "cchGPT/gpt-5.3-codex": 140000,
+      "cchGPT/gpt-5.2": 140000
+    },
+
+    "nudgeFrequency": 4,
+    "iterationNudgeThreshold": 12,
+    "nudgeForce": "soft",
+
+    "protectedTools": [
+      "task",
+      "skill",
+      "todowrite",
+      "todoread"
+    ],
+
+    "protectUserMessages": false
+  },
+
+  "strategies": {
+    "deduplication": {
+      "enabled": true,
+      "protectedTools": []
+    },
+    "purgeErrors": {
+      "enabled": true,
+      "turns": 3,
+      "protectedTools": []
+    }
+  }
+}
